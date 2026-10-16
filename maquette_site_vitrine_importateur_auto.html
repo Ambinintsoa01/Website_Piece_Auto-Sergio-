@@ -3,445 +3,1408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEUTSCHPARTS IMPORT - Spécialiste Pièces Auto Allemandes OEM</title>
+    <title>DriveX • DeutschParts Import | Pièces Auto d'Origine Allemande OEM</title>
+    
+    <!-- Polices Google : Plus Jakarta Sans (Typographie exacte de la maquette DriveX) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        drive: {
+                            red: '#e11d48',
+                            darkred: '#be123c',
+                            black: '#07080b',
+                            dark: '#0c0e14',
+                            carddark: '#11131a',
+                            border: '#e2e8f0',
+                            slate: '#64748b'
+                        }
+                    },
+                    boxShadow: {
+                        'drivex': '0 20px 45px -15px rgba(0, 0, 0, 0.08)',
+                        'drivex-lg': '0 30px 65px -15px rgba(0, 0, 0, 0.14)',
+                        'card': '0 15px 30px -10px rgba(0, 0, 0, 0.06)'
                     }
                 }
             }
         }
     </script>
+
     <style>
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 7px; }
         ::-webkit-scrollbar-track { background: #f8fafc; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
-        
-        .german-gradient-bar {
-            background: linear-gradient(90deg, #000000 0%, #000000 33%, #DD0000 33%, #DD0000 66%, #FFCE00 66%, #FFCE00 100%);
-            height: 6px;
+        ::-webkit-scrollbar-thumb:hover { background: #07080b; }
+
+        /* Filigrane d'arrière-plan DRIVE géant */
+        .watermark-drive {
+            font-size: clamp(90px, 16vw, 210px);
+            font-weight: 900;
+            color: rgba(241, 245, 249, 0.9);
+            line-height: 0.8;
+            letter-spacing: -0.06em;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* Bandeau diagonal rouge vif signature DriveX dans le Hero */
+        .hero-diagonal-red {
+            position: absolute;
+            top: -60px;
+            right: -40px;
+            width: 140px;
+            height: 380px;
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+            transform: rotate(38deg);
+            z-index: 1;
+            box-shadow: 0 20px 40px rgba(225, 29, 72, 0.25);
+        }
+
+        /* Bandeau diagonal rouge dans la section "Turn Your Car" */
+        .turn-diagonal-red {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-25deg);
+            width: 100px;
+            height: 340px;
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+            z-index: 0;
+            box-shadow: 0 15px 35px rgba(225, 29, 72, 0.3);
+        }
+
+        /* Cercles concentriques lumineux pour les témoignages */
+        .rings-concentric {
+            background: radial-gradient(circle, rgba(225, 29, 72, 0.07) 0%, rgba(225, 29, 72, 0.03) 45%, rgba(225, 29, 72, 0.01) 65%, transparent 75%);
+        }
+
+        /* Liseré subtil tricolore allemand discret */
+        .german-topline {
+            background: linear-gradient(90deg, #07080b 0%, #07080b 33%, #e11d48 33%, #e11d48 66%, #f59e0b 66%, #f59e0b 100%);
+            height: 3px;
+        }
+
+        /* Motif grille de points */
+        .dots-pattern {
+            background-image: radial-gradient(rgba(148, 163, 184, 0.35) 1.5px, transparent 1.5px);
+            background-size: 16px 16px;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-white text-slate-800 font-sans antialiased selection:bg-drive-black selection:text-white overflow-x-hidden">
 
-    <!-- BARRE DE PRÉSENTATION MAQUETTE (Masquée pour les visiteurs finaux, accessible via URL secrète ou combinaison) -->
-    <div id="maquetteBar" class="hidden bg-white/95 border-b border-slate-200 px-4 py-2.5 sticky top-0 z-50 backdrop-blur-md shadow-sm">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+    <!-- ===================================================================== -->
+    <!-- BARRE COMMUTABLE DE DÉMONSTRATION (Vitrine DriveX, Catalogue, Admin)  -->
+    <!-- ===================================================================== -->
+    <div id="maquetteBar" class="hidden fixed top-0 left-0 right-0 z-[60] bg-drive-black text-white border-b border-slate-800 px-4 py-2.5 backdrop-blur-md shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
             <div class="flex items-center space-x-2">
-                <span class="bg-red-600 text-white font-bold px-2.5 py-0.5 rounded text-xs uppercase tracking-wider">Maquette Client</span>
-                <span class="text-slate-600 hidden lg:inline font-medium">Naviguez entre l'accueil vitrine, le catalogue détaillé et l'espace admin.</span>
+                <span class="bg-drive-red text-white font-extrabold px-2.5 py-0.5 rounded text-[10px] uppercase tracking-wider">DriveX Template</span>
+                <span class="text-slate-300 hidden sm:inline">Reproduction intégrale du design DriveX (Hero, Univers, Handpicked, 4 Étapes, Avis & Footer).</span>
             </div>
-            <div class="flex flex-wrap items-center bg-slate-100 p-1 rounded-lg border border-slate-200 gap-1">
-                <button id="btnViewSite" onclick="switchMainView('site')" class="px-3 py-1.5 rounded-md font-semibold transition-all bg-red-600 text-white shadow-sm">
-                    <i class="fa-solid fa-globe mr-1.5"></i>1. Accueil Vitrine
+            <div class="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-800 gap-1">
+                <button id="btnViewSite" onclick="switchMainView('site')" class="px-3 py-1.5 rounded-lg font-bold transition-all bg-white text-drive-black shadow-sm">
+                    <i class="fa-solid fa-car-side mr-1.5 text-drive-red"></i>1. Vitrine DriveX
                 </button>
-                <button id="btnViewCatalog" onclick="openCatalogPage('all')" class="px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900">
+                <button id="btnViewCatalog" onclick="openCatalogPage('all')" class="px-3 py-1.5 rounded-lg font-bold transition-all text-slate-300 hover:text-white">
                     <i class="fa-solid fa-boxes-stacked mr-1.5"></i>2. Catalogue Pièces & Filtres
                 </button>
-                <button id="btnViewAdmin" onclick="switchMainView('admin')" class="px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900">
-                    <i class="fa-solid fa-chart-pie mr-1.5"></i>3. Espace Admin (Stats & AWS)
+                <button id="btnViewAdmin" onclick="switchMainView('admin')" class="px-3 py-1.5 rounded-lg font-bold transition-all text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-chart-pie mr-1.5 text-amber-400"></i>3. Admin (Stats & AWS)
+                </button>
+                <button onclick="toggleAdminBar()" title="Masquer la barre" class="px-2 py-1.5 text-slate-400 hover:text-white ml-1">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- ===================================================================== -->
-    <!-- VUE 1 : SITE VITRINE PUBLIC                                           -->
+    <!-- VUE 1 : SITE VITRINE PUBLIC EXACT DRIVEX (PLEINE LARGEUR D'ÉCRAN)     -->
     <!-- ===================================================================== -->
-    <div id="publicSiteView">
-        <div class="german-gradient-bar"></div>
+    <div id="publicSiteView" class="min-h-screen w-full relative bg-white">
 
-        <!-- NAVIGATION -->
-        <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-                <a href="#" onclick="switchMainView('site')" class="flex items-center space-x-3 group">
-                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center shadow-md text-white">
-                        <i class="fa-solid fa-gears text-xl"></i>
+        <!-- ============================================================= -->
+        <!-- 1. NAVBAR DRIVEX (AFFICHÉE EN PERMANENCE AU SCROLL)           -->
+        <!-- ============================================================= -->
+        <header id="mainNavbar" class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100/90 shadow-sm transition-all">
+            <div class="german-topline"></div>
+            <div class="max-w-7xl mx-auto px-6 sm:px-10 h-20 sm:h-24 flex items-center justify-between">
+                
+                <!-- LOGO EXACT DRIVEX AVEC X ROUGE -->
+                <a href="#" onclick="switchMainView('site')" class="flex items-center space-x-2 group">
+                    <div class="text-2xl sm:text-3xl font-black tracking-tight text-drive-black">
+                        Drive<span class="text-drive-red">X</span>
                     </div>
-                    <div>
-                        <span class="text-xl font-extrabold tracking-tight text-slate-900">DEUTSCH<span class="text-red-600">PARTS</span></span>
-                        <span class="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold -mt-1">Importateur Officiel OEM</span>
+                    <div class="hidden sm:block border-l border-slate-200 pl-2 ml-1 text-[9px] font-bold uppercase tracking-widest text-slate-400 leading-tight">
+                        OEM German<br>Parts Import
                     </div>
                 </a>
 
-                <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
-                    <a href="#societe" class="hover:text-red-600 transition-colors">La Société & Parcours</a>
-                    <a href="#actualites" class="hover:text-red-600 transition-colors flex items-center">
-                        <span>Promos & Déstockage</span>
-                        <span class="ml-2 px-2 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 rounded-full animate-pulse">LIVE</span>
+                <!-- LIENS EXACTS DRIVEX (Buy, Sell, Brands, Services, About) -->
+                <nav class="hidden lg:flex items-center space-x-8 text-xs font-bold uppercase tracking-wider text-slate-600">
+                    <a href="#selection" class="hover:text-drive-black transition-colors">Pièces Phares</a>
+                    <a href="#gammes" class="hover:text-drive-black transition-colors">Univers & Gammes</a>
+                    <a href="#partenaires" class="hover:text-drive-black transition-colors">Marques OEM</a>
+                    <a href="#process" class="hover:text-drive-black transition-colors">Notre Process</a>
+                    <a href="#actualites" class="hover:text-drive-black transition-colors flex items-center gap-1.5">
+                        <span>Promos & Arrivages</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-drive-red animate-ping"></span>
                     </a>
-                    <a href="#avis" class="hover:text-red-600 transition-colors">Avis Clients</a>
+                    <a href="#avis" class="hover:text-drive-black transition-colors">Avis Garages</a>
                 </nav>
 
-                <div class="hidden sm:flex items-center space-x-3">
-                    <a href="#contact" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-sm shadow-md transition-all flex items-center space-x-2">
-                        <i class="fa-solid fa-phone-volume"></i>
+                <!-- ACTIONS UTILITAIRES DRIVEX : Recherche, Sign In & Bouton Pill Noir -->
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <button onclick="openCatalogPage('all')" title="Recherche catalogue" class="w-9 h-9 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 hover:text-drive-black transition-colors">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </button>
+                    <a href="#contact" class="hidden sm:flex items-center space-x-1.5 text-xs font-bold text-slate-700 hover:text-drive-black">
+                        <i class="fa-regular fa-user text-xs"></i>
+                        <span>Sign in</span>
+                    </a>
+                    <!-- Bouton pilule noir DriveX avec flèche -->
+                    <a href="#contact" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-drive-black hover:bg-slate-800 text-white font-extrabold text-xs shadow-sm hover:shadow-md transition-all flex items-center space-x-2 group">
                         <span>Demander une pièce</span>
+                        <i class="fa-solid fa-arrow-right text-[10px] text-drive-red group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
             </div>
         </header>
 
-        <!-- HERO SECTION -->
-        <section class="relative bg-white py-20 lg:py-28 overflow-hidden border-b border-slate-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid lg:grid-cols-12 gap-12 items-center">
-                    <div class="lg:col-span-7 space-y-6">
-                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-600 text-xs font-bold uppercase tracking-wider">
-                            <i class="fa-solid fa-certificate"></i>
-                            <span>Pièces d'origine Allemagne • Première Monte (OEM)</span>
+        <!-- ============================================================= -->
+        <!-- 2. HERO SECTION EXACTE DRIVEX (AVEC MARGE HAUTE NAVBAR)        -->
+        <!-- ============================================================= -->
+        <section class="relative pt-24 sm:pt-32 lg:pt-36 pb-16 sm:pb-24 lg:pb-20 px-6 sm:px-10 lg:px-14 overflow-hidden bg-white">
+                
+                <!-- BANDEAU DIAGONAL ROUGE SIGNATURE DRIVEX EN HAUT À DROITE -->
+                <div class="hero-diagonal-red hidden md:block pointer-events-none"></div>
+
+                <!-- FILIGRANE GÉANT TYPOGRAPHIQUE "DRIVE" -->
+                <div class="absolute top-10 right-10 lg:right-28 watermark-drive">
+                    DRIVE
+                </div>
+
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                        
+                        <!-- COLONNE GAUCHE : HEADLINE, TEXTE ET DOUBLE BOUTONS -->
+                        <div class="lg:col-span-6 space-y-6">
+                            
+                            <!-- BADGE EXACT DRIVEX : TIRET ROUGE + PREMIUM CAR MARKETPLACE -->
+                            <div class="flex items-center space-x-2.5 text-xs font-extrabold tracking-widest uppercase text-slate-400">
+                                <span class="w-6 h-0.5 bg-drive-red"></span>
+                                <span>Importateur Direct Pièces Auto Allemandes</span>
+                            </div>
+
+                            <!-- TITRE EXACT DRIVEX AVEC POINT ROUGE -->
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-drive-black tracking-tight leading-[1.06]">
+                                Find More <br>
+                                Than Just a Piece<span class="text-drive-red">.</span>
+                            </h1>
+
+                            <!-- SOUS-TITRE DRIVEX -->
+                            <div class="text-xs font-extrabold tracking-widest uppercase text-slate-400 -mt-2">
+                                DRIVE YOUR EXCELLENCE • ORIGINE DIRECTE ALLEMAGNE
+                            </div>
+
+                            <p class="text-sm sm:text-base text-slate-500 leading-relaxed max-w-lg font-normal">
+                                Spécialiste indépendant de l'approvisionnement en pièces automobiles d'origine usine pour <strong class="text-slate-900 font-semibold">Porsche, BMW, Mercedes-Benz, Audi et Volkswagen</strong>. Sans intermédiaires, qualité première monte certifiée et réactivité garantie.
+                            </p>
+
+                            <!-- BOUTONS D'ACTION DUAL DRIVEX : Explore Cars -> / Sell Your Car -->
+                            <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                                <button onclick="openCatalogPage('all')" class="px-7 py-3.5 rounded-full bg-drive-black hover:bg-slate-800 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-drive-black/15 transition-all flex items-center space-x-2.5 group">
+                                    <span>Explorer le Catalogue</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px] text-drive-red group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                                <a href="#contact" class="px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 font-extrabold text-xs uppercase tracking-wider transition-all flex items-center space-x-2 shadow-sm">
+                                    <span>Devis Rapide (VIN)</span>
+                                </a>
+                            </div>
+
                         </div>
-                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                            L'excellence allemande <span class="text-red-600">directement</span> pour vos véhicules.
-                        </h1>
-                        <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-                            Spécialiste de l'importation de pièces automobiles d'origine (Volkswagen, Audi, BMW, Mercedes-Benz, Porsche). Un approvisionnement direct usine pour les professionnels et passionnés exigeants, sans intermédiaires superflus.
-                        </p>
-                        <div class="flex flex-wrap gap-4 pt-4">
-                            <button onclick="openCatalogPage('all')" class="px-8 py-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow-lg shadow-red-600/20 transition-all flex items-center space-x-2">
-                                <i class="fa-solid fa-boxes-stacked"></i>
-                                <span>Explorer le Catalogue Pièces</span>
+
+                        <!-- COLONNE DROITE : PORSCHE 911 NOIRE / ANTHRACITE + TAGS DRIVEX -->
+                        <div class="lg:col-span-6 relative mt-6 lg:mt-0">
+                            
+                            <!-- TAGS TOP RIGHT : PERFORMANCE / LUXURY / FREEDOM -->
+                            <div class="absolute -top-7 right-0 text-right hidden sm:block z-20">
+                                <div class="text-[10px] font-extrabold tracking-widest uppercase text-slate-400 leading-tight space-y-0.5">
+                                    <div>PERFORMANCE</div>
+                                    <div>QUALITÉ OEM</div>
+                                    <div class="text-drive-red">ORIGINE ALLEMANDE</div>
+                                </div>
+                            </div>
+
+                            <!-- CONTENEUR DU VÉHICULE EN PERSPECTIVE STUDIO -->
+                            <div class="relative flex flex-col items-center">
+                                
+                                <div class="relative w-full max-w-lg mx-auto">
+                                    <!-- Photo Porsche 911 GT3 / Carrera noire/anthracite exacte -->
+                                    <img id="heroCarImage" 
+                                         src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=85" 
+                                         alt="Porsche 911 Noire Style DriveX" 
+                                         class="w-full h-auto object-contain rounded-2xl drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)] transition-transform duration-500 hover:scale-[1.02]">
+                                    
+                                    <!-- Tag vertical discret à droite : "BUILT FOR WHAT'S NEXT" -->
+                                    <div class="absolute -right-3 top-1/2 -translate-y-1/2 rotate-90 origin-right text-[8px] font-extrabold uppercase tracking-widest text-slate-400 hidden sm:block">
+                                        BUILT FOR WHAT'S NEXT
+                                    </div>
+
+                                    <!-- Carte info sous le véhicule -->
+                                    <div class="absolute -bottom-4 -left-2 sm:bottom-2 sm:left-2 bg-white/95 backdrop-blur-md border border-slate-200 p-3 sm:p-3.5 rounded-2xl shadow-xl flex items-center space-x-3 max-w-[250px]">
+                                        <div class="w-9 h-9 rounded-xl bg-drive-black text-white flex items-center justify-center font-bold text-xs shrink-0">
+                                            <i class="fa-solid fa-shield-halved text-drive-red"></i>
+                                        </div>
+                                        <div>
+                                            <div id="heroCarModel" class="text-xs font-black text-drive-black leading-tight">Porsche 911 Carrera</div>
+                                            <div id="heroCarParts" class="text-[10px] text-slate-500 mt-0.5">Freins ATE Céramique & Boîte ZF 8HP</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CONTRÔLES SLIDER DRIVEX : ( < ) • • • ( > ) -->
+                                <div class="flex items-center space-x-3 mt-8">
+                                    <button onclick="prevHeroCar()" title="Précédent" class="w-8 h-8 rounded-full border border-slate-300 hover:border-drive-black text-slate-700 hover:text-drive-black flex items-center justify-center text-xs transition-colors">
+                                        <i class="fa-solid fa-arrow-left"></i>
+                                    </button>
+                                    
+                                    <div class="flex items-center space-x-1.5">
+                                        <button onclick="setHeroCarIndex(0)" class="hero-dot w-6 h-1.5 rounded-full bg-drive-black transition-all"></button>
+                                        <button onclick="setHeroCarIndex(1)" class="hero-dot w-2 h-1.5 rounded-full bg-slate-300 transition-all"></button>
+                                        <button onclick="setHeroCarIndex(2)" class="hero-dot w-2 h-1.5 rounded-full bg-slate-300 transition-all"></button>
+                                        <button onclick="setHeroCarIndex(3)" class="hero-dot w-2 h-1.5 rounded-full bg-slate-300 transition-all"></button>
+                                    </div>
+
+                                    <button onclick="nextHeroCar()" title="Suivant" class="w-8 h-8 rounded-full border border-slate-300 hover:border-drive-black text-slate-700 hover:text-drive-black flex items-center justify-center text-xs transition-colors">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ========================================================= -->
+                    <!-- BARRE STATS / TRUST HERO DRIVEX : 500+ / 100% / 50K+       -->
+                    <!-- ========================================================= -->
+                    <div class="mt-14 sm:mt-16 pt-8 border-t border-slate-100">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                            
+                            <div class="flex items-center space-x-4 p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                                <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 text-drive-black flex items-center justify-center text-lg shadow-sm">
+                                    <i class="fa-solid fa-boxes-stacked text-drive-red"></i>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-black text-drive-black">1 200+</div>
+                                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Références Direct Usine</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                                <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 text-drive-black flex items-center justify-center text-lg shadow-sm">
+                                    <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-black text-drive-black">100%</div>
+                                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Origine Allemande Certifiée</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                                <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 text-drive-black flex items-center justify-center text-lg shadow-sm">
+                                    <i class="fa-solid fa-users text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-black text-drive-black">+450</div>
+                                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Garages & Pros Référencés</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- 3. SECTION "FIND YOUR PERFECT MATCH" (POSITIONNÉE COMME DRIVEX)-->
+            <!-- ============================================================= -->
+            <section id="gammes" class="py-16 sm:py-20 px-6 sm:px-10 lg:px-14 border-t border-slate-100 bg-[#fbfbfc]">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid lg:grid-cols-12 gap-10 items-start">
+                        
+                        <!-- CÔTÉ GAUCHE DRIVEX : TIRET ROUGE + "Find Your Perfect Match" -->
+                        <div class="lg:col-span-4 space-y-5">
+                            <div class="flex items-center space-x-2 text-xs font-extrabold tracking-widest uppercase text-slate-400">
+                                <span class="w-5 h-0.5 bg-drive-red"></span>
+                                <span>DISCOVER YOUR CATEGORY</span>
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl font-black text-drive-black tracking-tight leading-tight">
+                                Find Your <br>
+                                <span class="text-drive-red">Perfect Match</span>
+                            </h2>
+                            <p class="text-sm text-slate-500 leading-relaxed">
+                                De l'entretien courant aux pièces les plus pointues, accédez aux composants directement calibrés pour les exigences des constructeurs d'outre-Rhin.
+                            </p>
+                            <button onclick="openCatalogPage('all')" class="inline-flex items-center space-x-2 text-xs font-extrabold text-drive-black hover:text-drive-red transition-colors group pt-2">
+                                <span>View All Parts</span>
+                                <i class="fa-solid fa-arrow-right text-[10px] text-drive-red group-hover:translate-x-1 transition-transform"></i>
                             </button>
-                            <a href="#contact" class="px-8 py-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm border border-slate-300 transition-all flex items-center space-x-2 shadow-sm">
-                                <i class="fa-solid fa-paper-plane text-red-600"></i>
-                                <span>Demander un devis rapide</span>
+                        </div>
+
+                        <!-- CÔTÉ DROIT DRIVEX : 3 CARTES AVEC TITRES BLANCS EN HAUT (LUXURY, SPORTS, SUV) -->
+                        <div class="lg:col-span-8 grid sm:grid-cols-3 gap-5">
+                            
+                            <!-- Carte 1 : LUXURY / Sécurité & Freinage -->
+                            <div class="relative rounded-2xl overflow-hidden h-80 shadow-md group cursor-pointer" onclick="openCatalogPage('freinage')">
+                                <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80" alt="Sécurité et Freinage" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/80 p-5 flex flex-col justify-between text-white">
+                                    <div>
+                                        <div class="text-[10px] font-black uppercase tracking-widest text-slate-300">LUXURY</div>
+                                        <div class="text-xs text-slate-300 mt-1">Refined for extraordinary lives.</div>
+                                    </div>
+                                    <div class="flex items-end justify-between">
+                                        <div>
+                                            <div class="text-[10px] uppercase font-bold text-drive-red">ATE • BREMBO</div>
+                                            <div class="text-base font-extrabold text-white">Sécurité & Freinage</div>
+                                        </div>
+                                        <div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center text-xs group-hover:bg-drive-red transition-colors">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Carte 2 : SPORTS / Moteur & Filtration -->
+                            <div class="relative rounded-2xl overflow-hidden h-80 shadow-md group cursor-pointer" onclick="openCatalogPage('moteur')">
+                                <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80" alt="Moteur et Filtration" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/80 p-5 flex flex-col justify-between text-white">
+                                    <div>
+                                        <div class="text-[10px] font-black uppercase tracking-widest text-slate-300">SPORTS</div>
+                                        <div class="text-xs text-slate-300 mt-1">Built for the thrill.</div>
+                                    </div>
+                                    <div class="flex items-end justify-between">
+                                        <div>
+                                            <div class="text-[10px] uppercase font-bold text-drive-red">INA • MANN-FILTER</div>
+                                            <div class="text-base font-extrabold text-white">Moteur & Distribution</div>
+                                        </div>
+                                        <div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center text-xs group-hover:bg-drive-red transition-colors">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Carte 3 : SUV / Suspension & Train -->
+                            <div class="relative rounded-2xl overflow-hidden h-80 shadow-md group cursor-pointer" onclick="openCatalogPage('suspension')">
+                                <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" alt="Suspension et Train Roulant" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/80 p-5 flex flex-col justify-between text-white">
+                                    <div>
+                                        <div class="text-[10px] font-black uppercase tracking-widest text-slate-300">SUV</div>
+                                        <div class="text-xs text-slate-300 mt-1">Adventure without limits.</div>
+                                    </div>
+                                    <div class="flex items-end justify-between">
+                                        <div>
+                                            <div class="text-[10px] uppercase font-bold text-drive-red">BILSTEIN • LEMFÖRDER</div>
+                                            <div class="text-base font-extrabold text-white">Suspension & Train</div>
+                                        </div>
+                                        <div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center text-xs group-hover:bg-drive-red transition-colors">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- 4. SECTION "HANDPICKED FOR YOU."                              -->
+            <!-- ============================================================= -->
+            <section id="selection" class="py-16 sm:py-20 px-6 sm:px-10 lg:px-14 border-t border-slate-100 bg-white">
+                <div class="max-w-7xl mx-auto">
+                    
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+                        <div>
+                            <h2 class="text-3xl sm:text-4xl font-black text-drive-black tracking-tight">
+                                Handpicked <span class="text-drive-red">For You.</span>
+                            </h2>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="openCatalogPage('all')" class="text-xs font-bold text-slate-500 hover:text-drive-black underline">View All Parts</button>
+                            <div class="flex items-center space-x-1.5">
+                                <button onclick="openCatalogPage('all')" class="w-7 h-7 rounded-full border border-slate-200 text-slate-600 hover:text-drive-black flex items-center justify-center text-[10px]">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <button onclick="openCatalogPage('all')" class="w-7 h-7 rounded-full bg-drive-black text-white flex items-center justify-center text-[10px]">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4 CARTES LISTING DU MODÈLE DRIVEX (BMW X5, Audi Q7, Mercedes, Porsche 911) -->
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        
+                        <!-- Carte 1 : BMW X5 -->
+                        <div class="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-sm hover:shadow-card hover:-translate-y-1 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 bg-slate-100">
+                                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80" alt="BMW X5" class="w-full h-full object-cover">
+                                    <span class="absolute top-2 left-2 bg-amber-500 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">TOP DEAL</span>
+                                    <span class="absolute top-2 right-2 text-slate-400 hover:text-drive-red cursor-pointer"><i class="fa-regular fa-heart text-xs"></i></span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-xs font-bold text-drive-black">
+                                    <i class="fa-solid fa-circle-notch text-blue-600"></i>
+                                    <span>BMW X5 Luxury xDrive</span>
+                                </div>
+                                <div class="text-[11px] font-bold text-slate-900 mt-1">Kit Bras Meyle HD Renforcé</div>
+                                <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-400 border-t border-b border-slate-100 py-2 mt-2">
+                                    <div><i class="fa-regular fa-calendar mr-1"></i>2024</div>
+                                    <div><i class="fa-solid fa-certificate mr-1 text-emerald-600"></i>OEM</div>
+                                    <div><i class="fa-solid fa-check mr-1 text-blue-600"></i>En Stock</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-2 flex items-center justify-between">
+                                <div>
+                                    <div class="text-[9px] text-slate-400 uppercase">Tarif Direct Usine</div>
+                                    <div class="text-xs font-black text-drive-black">OEM 31 12 6 775</div>
+                                </div>
+                                <button onclick="requestQuote('Kit Bras Meyle HD (BMW X5 - OEM 31 12 6 775)')" class="w-7 h-7 rounded-full bg-drive-black hover:bg-drive-red text-white flex items-center justify-center text-[10px] transition-colors">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Carte 2 : Audi Q7 -->
+                        <div class="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-sm hover:shadow-card hover:-translate-y-1 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 bg-slate-100">
+                                    <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=600&q=80" alt="Audi Q7" class="w-full h-full object-cover">
+                                    <span class="absolute top-2 left-2 bg-emerald-500 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">HOT DEAL</span>
+                                    <span class="absolute top-2 right-2 text-slate-400 hover:text-drive-red cursor-pointer"><i class="fa-regular fa-heart text-xs"></i></span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-xs font-bold text-drive-black">
+                                    <i class="fa-solid fa-ring text-slate-700"></i>
+                                    <span>Audi Q7 Technology TDI</span>
+                                </div>
+                                <div class="text-[11px] font-bold text-slate-900 mt-1">Kit Distribution Renforcé INA</div>
+                                <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-400 border-t border-b border-slate-100 py-2 mt-2">
+                                    <div><i class="fa-regular fa-calendar mr-1"></i>2024</div>
+                                    <div><i class="fa-solid fa-certificate mr-1 text-emerald-600"></i>OEM</div>
+                                    <div><i class="fa-solid fa-check mr-1 text-blue-600"></i>En Stock</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-2 flex items-center justify-between">
+                                <div>
+                                    <div class="text-[9px] text-slate-400 uppercase">Tarif Direct Usine</div>
+                                    <div class="text-xs font-black text-drive-black">OEM 11 31 8 510</div>
+                                </div>
+                                <button onclick="requestQuote('Kit Chaîne Distribution INA (Audi Q7 - OEM 11 31 8 510)')" class="w-7 h-7 rounded-full bg-drive-black hover:bg-drive-red text-white flex items-center justify-center text-[10px] transition-colors">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Carte 3 : Mercedes-Benz -->
+                        <div class="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-sm hover:shadow-card hover:-translate-y-1 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 bg-slate-100">
+                                    <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=600&q=80" alt="Mercedes Classe C" class="w-full h-full object-cover">
+                                    <span class="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">POPULAR</span>
+                                    <span class="absolute top-2 right-2 text-slate-400 hover:text-drive-red cursor-pointer"><i class="fa-regular fa-heart text-xs"></i></span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-xs font-bold text-drive-black">
+                                    <i class="fa-solid fa-star text-slate-700"></i>
+                                    <span>Mercedes-AMG Classe C</span>
+                                </div>
+                                <div class="text-[11px] font-bold text-slate-900 mt-1">Amortisseurs Bilstein B4 Gaz</div>
+                                <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-400 border-t border-b border-slate-100 py-2 mt-2">
+                                    <div><i class="fa-regular fa-calendar mr-1"></i>2024</div>
+                                    <div><i class="fa-solid fa-certificate mr-1 text-emerald-600"></i>OEM</div>
+                                    <div><i class="fa-solid fa-check mr-1 text-blue-600"></i>En Stock</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-2 flex items-center justify-between">
+                                <div>
+                                    <div class="text-[9px] text-slate-400 uppercase">Tarif Direct Usine</div>
+                                    <div class="text-xs font-black text-drive-black">OEM 22-241664</div>
+                                </div>
+                                <button onclick="requestQuote('Amortisseurs Bilstein B4 (Mercedes Classe C - OEM 22-241664)')" class="w-7 h-7 rounded-full bg-drive-black hover:bg-drive-red text-white flex items-center justify-center text-[10px] transition-colors">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Carte 4 : Porsche 911 -->
+                        <div class="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-sm hover:shadow-card hover:-translate-y-1 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 bg-slate-100">
+                                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" alt="Porsche 911" class="w-full h-full object-cover">
+                                    <span class="absolute top-2 left-2 bg-drive-red text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">PREMIUM</span>
+                                    <span class="absolute top-2 right-2 text-slate-400 hover:text-drive-red cursor-pointer"><i class="fa-regular fa-heart text-xs"></i></span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-xs font-bold text-drive-black">
+                                    <i class="fa-solid fa-shield-cat text-amber-600"></i>
+                                    <span>Porsche 911 Carrera S</span>
+                                </div>
+                                <div class="text-[11px] font-bold text-slate-900 mt-1">Disques & Plaquettes ATE Ceramic</div>
+                                <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-400 border-t border-b border-slate-100 py-2 mt-2">
+                                    <div><i class="fa-regular fa-calendar mr-1"></i>2024</div>
+                                    <div><i class="fa-solid fa-certificate mr-1 text-emerald-600"></i>OEM</div>
+                                    <div><i class="fa-solid fa-check mr-1 text-blue-600"></i>En Stock</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-2 flex items-center justify-between">
+                                <div>
+                                    <div class="text-[9px] text-slate-400 uppercase">Tarif Direct Usine</div>
+                                    <div class="text-xs font-black text-drive-black">OEM 34 11 6 850</div>
+                                </div>
+                                <button onclick="requestQuote('Disques Ventilés ATE Ceramic (Porsche 911 - OEM 34 11 6 850)')" class="w-7 h-7 rounded-full bg-drive-black hover:bg-drive-red text-white flex items-center justify-center text-[10px] transition-colors">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- 5. SECTION "TURN YOUR CAR INTO NEW OPPORTUNITIES" (EXACT DRIVEX)-->
+            <!-- ============================================================= -->
+            <section class="py-16 sm:py-20 px-6 sm:px-10 lg:px-14 border-t border-slate-100 bg-[#fbfbfc] relative overflow-hidden">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid lg:grid-cols-12 gap-8 items-center relative">
+                        
+                        <!-- GAUCHE : TEXTE & CTA ROUGE DRIVEX -->
+                        <div class="lg:col-span-5 space-y-5 relative z-10">
+                            <div class="flex items-center space-x-2 text-xs font-extrabold tracking-widest uppercase text-slate-400">
+                                <span class="w-5 h-0.5 bg-drive-red"></span>
+                                <span>DEVIS EXPRESS PAR CHÂSSIS</span>
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl font-black text-drive-black tracking-tight leading-tight">
+                                Turn Your Request <br>
+                                Into <span class="text-drive-red">New Opportunities</span>
+                            </h2>
+                            <p class="text-sm text-slate-500 leading-relaxed max-w-md">
+                                Obtenez le chiffrage exact de vos pièces d'origine grâce à une identification directe sur catalogues constructeurs ETKA, EPC et Rheingold.
+                            </p>
+                            <a href="#contact" class="inline-flex items-center space-x-2 px-7 py-3.5 rounded-full bg-drive-red hover:bg-drive-darkred text-white font-extrabold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all group">
+                                <span>Get Your Quote (VIN)</span>
+                                <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
                             </a>
                         </div>
+
+                        <!-- CENTRE : VOITURE VUE DU DESSUS AVEC BANDE DIAGONALE ROUGE -->
+                        <div class="lg:col-span-3 relative flex items-center justify-center my-6 lg:my-0">
+                            <!-- Bande diagonale rouge -->
+                            <div class="turn-diagonal-red"></div>
+                            
+                            <!-- Voiture blanche vue du dessus -->
+                            <div class="relative z-10 w-44 sm:w-52 transform -rotate-12 hover:rotate-0 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80" alt="Voiture vue du dessus" class="w-full h-auto object-contain drop-shadow-2xl rounded-2xl">
+                            </div>
+                        </div>
+
+                        <!-- DROITE : 3 BADGES AVEC ICÔNES + CARTE NOIRE CARBONE AVEC CITATION -->
+                        <div class="lg:col-span-4 space-y-5 relative z-10">
+                            
+                            <!-- 3 badges verticaux -->
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3 bg-white p-3 rounded-xl border border-slate-200/80 shadow-sm">
+                                    <div class="w-8 h-8 rounded-lg bg-red-50 text-drive-red flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-bolt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-black text-drive-black">Fast & Secure</div>
+                                        <div class="text-[10px] text-slate-400">Process direct d'importation</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3 bg-white p-3 rounded-xl border border-slate-200/80 shadow-sm">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-tag"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-black text-drive-black">Best Market Price</div>
+                                        <div class="text-[10px] text-slate-400">Tarif usine sans intermédiaire</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3 bg-white p-3 rounded-xl border border-slate-200/80 shadow-sm">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-shield-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-black text-drive-black">Trusted by 450+ Garages</div>
+                                        <div class="text-[10px] text-slate-400">Traçabilité 100% garantie</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Carte noire avec citation exacte DriveX -->
+                            <div class="bg-drive-black text-white p-6 rounded-2xl relative overflow-hidden shadow-xl border border-slate-800">
+                                <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">GERMAN PRECISION</div>
+                                <div class="text-base sm:text-lg font-black tracking-tight leading-snug">
+                                    GOOD CARS <br>
+                                    CREATE <br>
+                                    <span class="text-drive-red">GREAT</span> <br>
+                                    TOMORROWS.
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
-                    <div class="lg:col-span-5">
-                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900">
-                            <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=DeutschParts+Import'" alt="Voiture Allemande Premium" class="w-full h-80 object-cover opacity-90">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-6">
-                                <div class="text-white">
-                                    <div class="text-xs uppercase font-bold text-amber-400 tracking-wider">Partenaire Officiel</div>
-                                    <div class="text-lg font-extrabold">Bosch • ZF • Lemförder • ATE • Meyle</div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- 6. SECTION "GET ON THE ROAD IN 4 SIMPLE STEPS" (ROUTE COURBE) -->
+            <!-- ============================================================= -->
+            <section id="process" class="py-16 sm:py-24 px-6 sm:px-10 lg:px-14 border-t border-slate-100 bg-white relative">
+                <div class="max-w-7xl mx-auto">
+                    
+                    <div class="grid lg:grid-cols-12 gap-8 items-center">
+                        
+                        <!-- GAUCHE : TITRE "Get on the Road in 4 Simple Steps" -->
+                        <div class="lg:col-span-4 space-y-5">
+                            <h2 class="text-3xl sm:text-4xl font-black text-drive-black tracking-tight leading-tight">
+                                Get on the Road <br>
+                                in <span class="text-drive-red">4 Simple Steps</span>
+                            </h2>
+                            <p class="text-sm text-slate-500 leading-relaxed">
+                                Trouver et recevoir vos pièces d'origine certifiées est transparent, rapide et sans mauvaise surprise de compatibilité.
+                            </p>
+                            <a href="#contact" class="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-drive-red hover:bg-drive-darkred text-white font-extrabold text-xs uppercase tracking-wider shadow-sm transition-all group">
+                                <span>Explore Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            <div class="text-[9px] font-extrabold tracking-widest uppercase text-slate-400 pt-2">
+                                YOUR DIRECT SUPPLY STARTS HERE
+                            </div>
+                        </div>
+
+                        <!-- DROITE : LA ROUTE COURBÉE STYLE DRIVEX AVEC LES 4 JALONS ROUGES -->
+                        <div class="lg:col-span-8 relative py-6">
+                            
+                            <!-- SVG DE LA ROUTE COURBÉE AVEC LIGNE POINTILLÉE -->
+                            <div class="relative w-full">
+                                <svg class="w-full h-28 hidden sm:block" viewBox="0 0 700 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Ruban de route large gris clair -->
+                                    <path d="M 40 45 Q 160 10 260 65 T 480 45 T 660 65" stroke="#f1f5f9" stroke-width="22" stroke-linecap="round" fill="none"/>
+                                    <path d="M 40 45 Q 160 10 260 65 T 480 45 T 660 65" stroke="#e2e8f0" stroke-width="14" stroke-linecap="round" fill="none"/>
+                                    <!-- Ligne pointillée centrale -->
+                                    <path d="M 40 45 Q 160 10 260 65 T 480 45 T 660 65" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+                                </svg>
+
+                                <!-- 4 JALONS NUMÉROTÉS POSITIONNÉS LE LONG DE LA ROUTE -->
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-4 sm:-mt-20 relative z-10 pt-4">
+                                    
+                                    <!-- Étape 01 : Search -->
+                                    <div class="space-y-1.5 text-center sm:text-left">
+                                        <div class="w-11 h-11 rounded-full bg-white border-2 border-drive-red text-drive-red shadow-md flex items-center justify-center text-sm font-black mx-auto sm:mx-0">
+                                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                                        </div>
+                                        <div class="text-xs font-black text-drive-red pt-1">01</div>
+                                        <div class="text-xs font-black text-drive-black">Search (VIN)</div>
+                                        <div class="text-[11px] text-slate-400 leading-tight">Identification par numéro de châssis.</div>
+                                    </div>
+
+                                    <!-- Étape 02 : Inspect -->
+                                    <div class="space-y-1.5 text-center sm:text-left sm:translate-y-6">
+                                        <div class="w-11 h-11 rounded-full bg-white border-2 border-drive-red text-drive-red shadow-md flex items-center justify-center text-sm font-black mx-auto sm:mx-0">
+                                            <i class="fa-solid fa-clipboard-check text-xs"></i>
+                                        </div>
+                                        <div class="text-xs font-black text-drive-red pt-1">02</div>
+                                        <div class="text-xs font-black text-drive-black">Inspect</div>
+                                        <div class="text-[11px] text-slate-400 leading-tight">Contrôle stock usine & devis sous 2h.</div>
+                                    </div>
+
+                                    <!-- Étape 03 : Buy -->
+                                    <div class="space-y-1.5 text-center sm:text-left">
+                                        <div class="w-11 h-11 rounded-full bg-white border-2 border-drive-red text-drive-red shadow-md flex items-center justify-center text-sm font-black mx-auto sm:mx-0">
+                                            <i class="fa-solid fa-credit-card text-xs"></i>
+                                        </div>
+                                        <div class="text-xs font-black text-drive-red pt-1">03</div>
+                                        <div class="text-xs font-black text-drive-black">Order</div>
+                                        <div class="text-[11px] text-slate-400 leading-tight">Expédition directe depuis l'Allemagne.</div>
+                                    </div>
+
+                                    <!-- Étape 04 : Drive -->
+                                    <div class="space-y-1.5 text-center sm:text-left sm:translate-y-6">
+                                        <div class="w-11 h-11 rounded-full bg-drive-red text-white shadow-md flex items-center justify-center text-sm font-black mx-auto sm:mx-0">
+                                            <i class="fa-solid fa-car-side text-xs"></i>
+                                        </div>
+                                        <div class="text-xs font-black text-drive-red pt-1">04</div>
+                                        <div class="text-xs font-black text-drive-black">Install & Drive</div>
+                                        <div class="text-[11px] text-slate-400 leading-tight">Montage immédiat en atelier pro.</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- 7. SECTION "REAL PEOPLE. REAL EXPERIENCES." (AVIS CLIENTS)    -->
+            <!-- ============================================================= -->
+            <section id="avis" class="py-16 sm:py-24 px-6 sm:px-10 lg:px-14 border-t border-slate-100 bg-[#fbfbfc] relative overflow-hidden">
+                
+                <!-- CERCLES CONCENTRIQUES LUMINEUX ROSE / CORAIL EN FOND -->
+                <div class="absolute right-10 bottom-0 w-96 h-96 rounded-full rings-concentric pointer-events-none"></div>
+
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid lg:grid-cols-12 gap-8 items-center relative z-10">
+                        
+                        <!-- GAUCHE : TITRE DRIVEX "Real People. Real Experiences." -->
+                        <div class="lg:col-span-5 space-y-5">
+                            <div class="flex items-center space-x-2 text-xs font-extrabold tracking-widest uppercase text-slate-400">
+                                <span class="w-5 h-0.5 bg-drive-red"></span>
+                                <span>TESTIMONIALS</span>
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl font-black text-drive-black tracking-tight leading-tight">
+                                Real People. <br>
+                                <span class="text-drive-red">Real Experiences.</span>
+                            </h2>
+                            <p class="text-sm text-slate-500 leading-relaxed max-w-sm">
+                                Découvrez pourquoi plus de 450 garages professionnels et passionnés nous font confiance pour leurs pièces critiques.
+                            </p>
+                            <!-- Flèches de navigation circulaire -->
+                            <div class="flex items-center space-x-3 pt-2">
+                                <button onclick="prevTestimonial()" class="w-10 h-10 rounded-full border border-slate-300 hover:border-drive-black text-slate-700 hover:text-drive-black flex items-center justify-center text-xs transition-colors">
+                                    <i class="fa-solid fa-arrow-left"></i>
+                                </button>
+                                <button onclick="nextTestimonial()" class="w-10 h-10 rounded-full bg-drive-red hover:bg-drive-darkred text-white flex items-center justify-center text-xs transition-colors shadow-md">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- DROITE : CARTE BLANCHE FLOTTANTE + VOITURE BLANCHE QUI ARRIVE -->
+                        <div class="lg:col-span-7 grid sm:grid-cols-12 gap-6 items-center">
+                            
+                            <!-- Carte de témoignage blanche flottante exacte DriveX -->
+                            <div class="sm:col-span-7 bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/90 shadow-drivex relative">
+                                <div class="text-3xl font-black text-rose-200 absolute top-4 right-6">“</div>
+                                <div class="flex items-center space-x-3 mb-4">
+                                    <img id="testiAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Client" class="w-11 h-11 rounded-full object-cover border border-slate-200">
+                                    <div>
+                                        <div id="testiName" class="text-xs font-black text-drive-black">Marc R.</div>
+                                        <div id="testiRole" class="text-[10px] text-slate-400">Garage EuroTech Auto • Paris</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-1 text-amber-400 text-xs mb-3">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                                <p id="testiQuote" class="text-xs sm:text-sm text-slate-600 leading-relaxed italic">
+                                    "Zéro retour sous garantie sur les bras Lemförder et amortisseurs Bilstein. Qualité d'origine irréprochable et identification par châssis fiable."
+                                </p>
+                            </div>
+
+                            <!-- Photo de la voiture blanche arrivant à droite comme sur la maquette -->
+                            <div class="sm:col-span-5 hidden sm:block">
+                                <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80" alt="Voiture blanche" class="w-full h-auto object-contain drop-shadow-xl rounded-2xl">
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- 8. SECTION ACTUALITÉS MARKETING & DÉSTOCKAGE LIVE             -->
+            <!-- ============================================================= -->
+            <section id="actualites" class="py-14 px-6 sm:px-10 lg:px-14 border-t border-slate-100 bg-white">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                        <div>
+                            <div class="flex items-center space-x-2 text-xs font-extrabold tracking-widest uppercase text-slate-400 mb-1">
+                                <span class="w-5 h-0.5 bg-drive-red"></span>
+                                <span>MARKETING & PROMOTIONS</span>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-black text-drive-black tracking-tight">
+                                Déstockages & Arrivages <span class="text-drive-red">Direct Usine.</span>
+                            </h2>
+                        </div>
+                        <div class="text-xs text-slate-500 font-semibold">
+                            Offres actualisées en direct depuis l'Espace Admin
+                        </div>
+                    </div>
+
+                    <div id="publicNewsContainer" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- 9. SECTION CONTACT & DEVIS CHÂSSIS (VIN)                      -->
+            <!-- ============================================================= -->
+            <section id="contact" class="py-16 sm:py-20 px-6 sm:px-10 lg:px-14 border-t border-slate-100 bg-[#fbfbfc]">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid lg:grid-cols-12 gap-10 items-center">
+                        
+                        <div class="lg:col-span-5 space-y-5">
+                            <div class="flex items-center space-x-2 text-xs font-extrabold tracking-widest uppercase text-slate-400">
+                                <span class="w-5 h-0.5 bg-drive-red"></span>
+                                <span>ASSISTANCE TECHNIQUE DIRECTE</span>
+                            </div>
+                            <h2 class="text-3xl font-black text-drive-black tracking-tight leading-tight">
+                                Demandez Votre Cotation <br>
+                                en Ligne Directe<span class="text-drive-red">.</span>
+                            </h2>
+                            <p class="text-sm text-slate-500 leading-relaxed">
+                                Renseignez votre numéro de châssis ou référence constructeur. Nos spécialistes vérifient la disponibilité auprès de nos usines partenaires en Allemagne et vous répondent sous 2 heures.
+                            </p>
+                            <div class="space-y-3 pt-2">
+                                <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center space-x-3">
+                                    <div class="w-9 h-9 rounded-xl bg-slate-50 text-drive-red flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[9px] font-bold text-slate-400 uppercase">Amazon WorkMail Pro</div>
+                                        <div class="text-xs font-black text-drive-black">contact@deutschparts-import.com</div>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center space-x-3">
+                                    <div class="w-9 h-9 rounded-xl bg-slate-50 text-emerald-600 flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[9px] font-bold text-slate-400 uppercase">Ligne Directe / WhatsApp</div>
+                                        <div class="text-xs font-black text-drive-black">+33 1 89 00 00 00 / +261 34 00 000 00</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- SECTION SOCIÉTÉ & PARCOURS -->
-        <section id="societe" class="py-20 bg-slate-50 border-b border-slate-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid lg:grid-cols-12 gap-12 items-start">
-                    <div class="lg:col-span-6 space-y-6">
-                        <div class="inline-block px-3 py-1 rounded-md bg-red-50 border border-red-200 text-red-600 text-xs font-bold uppercase tracking-wider">
-                            À Propos de notre société
-                        </div>
-                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">
-                            Le pont direct entre les usines allemandes et votre atelier.
-                        </h2>
-                        <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                            Fondée par des passionnés de mécanique européenne, <strong class="text-slate-900">DEUTSCHPARTS IMPORT</strong> garantit à ses clients des pièces rigoureusement identiques à celles sorties d'usine, tout en réduisant les coûts liés aux multiples intermédiaires.
-                        </p>
-                        <div class="grid sm:grid-cols-3 gap-4 pt-4">
-                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                                <i class="fa-solid fa-certificate text-amber-500 text-xl mb-2"></i>
-                                <h4 class="font-bold text-sm text-slate-900">Qualité Première Monte</h4>
-                                <p class="text-xs text-slate-600 mt-1">Traçabilité directe depuis l'Allemagne.</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                                <i class="fa-solid fa-plane-arrival text-red-600 text-xl mb-2"></i>
-                                <h4 class="font-bold text-sm text-slate-900">Logistique Rapide</h4>
-                                <p class="text-xs text-slate-600 mt-1">Arrivages réguliers sécurisés.</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                                <i class="fa-solid fa-headset text-emerald-600 text-xl mb-2"></i>
-                                <h4 class="font-bold text-sm text-slate-900">Conseil Technique</h4>
-                                <p class="text-xs text-slate-600 mt-1">Identification avec logiciels officiels.</p>
-                            </div>
-                        </div>
-                    </div>
+                        <!-- Formulaire Devis VIN -->
+                        <div class="lg:col-span-7">
+                            <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-drivex">
+                                <h3 class="text-base font-black text-drive-black mb-1">Formulaire de Devis Express</h3>
+                                <p class="text-xs text-slate-500 mb-5">Sans engagement • Réponse technique sous 2h ouvrées.</p>
 
-                    <div class="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
-                        <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center">
-                            <i class="fa-solid fa-route text-red-600 mr-3"></i>
-                            Notre Parcours & Évolution
-                        </h3>
-                        <div class="relative border-l-2 border-slate-300 ml-4 space-y-8">
-                            <div class="relative pl-6">
-                                <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-400 border-2 border-white"></span>
-                                <span class="text-xs font-bold text-amber-600 uppercase">2014 • Les Débuts</span>
-                                <h4 class="text-base font-bold text-slate-900 mt-0.5">Création & Premiers Réseaux à Francfort</h4>
-                                <p class="text-xs text-slate-600 mt-1">Lancement de l'importation sur commande pour véhicules allemands.</p>
-                            </div>
-                            <div class="relative pl-6">
-                                <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
-                                <span class="text-xs font-bold text-amber-600 uppercase">2018 • Accords Équipementiers</span>
-                                <h4 class="text-base font-bold text-slate-900 mt-0.5">Partenariats Directs OEM</h4>
-                                <p class="text-xs text-slate-600 mt-1">Contrats d'approvisionnement avec Bosch, Sachs et Meyle.</p>
-                            </div>
-                            <div class="relative pl-6">
-                                <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-red-600 border-2 border-white"></span>
-                                <span class="text-xs font-bold text-red-600 uppercase">2022 • Expansion</span>
-                                <h4 class="text-base font-bold text-slate-900 mt-0.5">Ouverture du Dépôt Principal</h4>
-                                <p class="text-xs text-slate-600 mt-1">Stock élargi pour disponibilité immédiate sur les pièces d'usure.</p>
-                            </div>
-                            <div class="relative pl-6">
-                                <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white"></span>
-                                <span class="text-xs font-bold text-emerald-600 uppercase">Aujourd'hui • Référence</span>
-                                <h4 class="text-base font-bold text-slate-900 mt-0.5">Réseau de +450 Garages</h4>
-                                <p class="text-xs text-slate-600 mt-1">Vitrine digitale moderne connectée via AWS.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                                <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-3.5">
+                                    <div class="grid sm:grid-cols-2 gap-3.5">
+                                        <div>
+                                            <label class="block text-[10px] font-extrabold text-slate-700 uppercase mb-1">Nom / Garage *</label>
+                                            <input type="text" required placeholder="Ex: Garage Rénov Auto" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:outline-none focus:border-drive-black">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-extrabold text-slate-700 uppercase mb-1">Téléphone / WhatsApp ou Email *</label>
+                                            <input type="text" required placeholder="Ex: 06 00 00 00 00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:outline-none focus:border-drive-black">
+                                        </div>
+                                    </div>
 
-        <!-- SECTION PRODUITS (MASQUÉE DE LA PAGE D'ACCUEIL) -->
-        <section id="produits" class="hidden py-20 bg-white border-b border-slate-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- Section masquée à la demande du client -->
-            </div>
-        </section>
+                                    <div class="grid sm:grid-cols-2 gap-3.5">
+                                        <div>
+                                            <label class="block text-[10px] font-extrabold text-slate-700 uppercase mb-1">Véhicule (Marque & Modèle)</label>
+                                            <input type="text" placeholder="Ex: Porsche 911 ou BMW X5" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:outline-none focus:border-drive-black">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-extrabold text-slate-700 uppercase mb-1">Numéro de Châssis (VIN)</label>
+                                            <input type="text" placeholder="17 caractères (ex: WBA...)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:outline-none focus:border-drive-black">
+                                        </div>
+                                    </div>
 
-        <!-- SECTION ACTUALITÉS MARKETING -->
-        <section id="actualites" class="py-20 bg-slate-50 border-b border-slate-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-                    <div>
-                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-red-50 border border-red-200 text-red-600 text-xs font-bold uppercase tracking-wider mb-3">
-                            <i class="fa-solid fa-bullhorn"></i>
-                            <span>Offres Marketing</span>
-                        </div>
-                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Arrivages & Déstockage</h2>
-                    </div>
-                </div>
-                <div id="publicNewsContainer" class="grid md:grid-cols-3 gap-6"></div>
-            </div>
-        </section>
+                                    <div>
+                                        <label class="block text-[10px] font-extrabold text-slate-700 uppercase mb-1">Pièce(s) recherchée(s) ou Référence OEM *</label>
+                                        <textarea id="quoteTextarea" rows="3" required placeholder="Ex: Disques de frein ventilés avant ATE et plaquettes céramiques..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:outline-none focus:border-drive-black"></textarea>
+                                    </div>
 
-        <!-- SECTION AVIS -->
-        <section id="avis" class="py-20 bg-white border-b border-slate-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-2xl mx-auto mb-14">
-                    <h2 class="text-3xl font-extrabold text-slate-900">Avis de nos clients et garages partenaires</h2>
-                </div>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
-                        <p class="text-slate-700 text-sm italic">"Zéro retour sous garantie sur les bras de suspension Lemförder. Qualité irréprochable."</p>
-                        <div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-900">Marc R. - Garage EuroTech Auto</div>
-                    </div>
-                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
-                        <p class="text-slate-700 text-sm italic">"Kit de vidange BVA ZF reçu rapidement pour mon BMW X5. Prix très compétitif."</p>
-                        <div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-900">Tiana A. - Propriétaire BMW X5</div>
-                    </div>
-                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
-                        <p class="text-slate-700 text-sm italic">"Les opérations de déstockage sur la filtration Mann-Filter nous permettent d'économiser 25%."</p>
-                        <div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-900">Sophie L. - Flotte Logistique</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                                    <button type="submit" class="w-full py-3.5 rounded-full bg-drive-black hover:bg-slate-800 text-white font-extrabold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group">
+                                        <span>Transmettre la demande de devis</span>
+                                        <i class="fa-solid fa-arrow-right text-[10px] text-drive-red group-hover:translate-x-1 transition-transform"></i>
+                                    </button>
+                                </form>
 
-        <!-- CONTACT -->
-        <section id="contact" class="py-20 bg-slate-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid lg:grid-cols-12 gap-12">
-                    <div class="lg:col-span-5 space-y-6">
-                        <h2 class="text-3xl font-extrabold text-slate-900">Besoin d'une pièce précise ?</h2>
-                        <p class="text-slate-600 text-sm leading-relaxed">Envoyez-nous la référence ou le numéro de châssis (VIN), réponse sous 2 heures.</p>
-                        <div class="space-y-4">
-                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-xs">
-                                <div class="text-slate-500">Email Pro AWS</div>
-                                <div class="font-bold text-slate-900 mt-1">contact@deutschparts-import.com</div>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-xs">
-                                <div class="text-slate-500">Téléphone / WhatsApp</div>
-                                <div class="font-bold text-slate-900 mt-1">+33 1 00 00 00 00 / +261 34 00 000 00</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-7">
-                        <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-lg">
-                            <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-4">
-                                <div class="grid sm:grid-cols-2 gap-4">
-                                    <input type="text" required placeholder="Votre Nom / Garage *" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs">
-                                    <input type="text" required placeholder="Téléphone ou Email *" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                                <div id="contactSuccess" class="hidden mt-4 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center space-x-3">
+                                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                                    <div>
+                                        <span class="font-bold">Demande transmise avec succès !</span> Notre équipe vous répondra sous 2h via contact@deutschparts-import.com.
+                                    </div>
                                 </div>
-                                <textarea rows="3" required placeholder="Décrivez les pièces souhaitées..." class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs"></textarea>
-                                <button type="submit" class="w-full py-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md">Envoyer la demande</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- 10. BAS DE PAGE NOIR CARBONE EXACT DRIVEX                     -->
+            <!-- ============================================================= -->
+            <footer class="bg-drive-black text-white pt-14 pb-10 px-6 sm:px-10 lg:px-14 relative overflow-hidden">
+                
+                <div class="max-w-7xl mx-auto relative z-10">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800">
+                        
+                        <!-- COLONNE 1 : LOGO DRIVEX + SOCIAL + VISUEL VOITURE ARRIÈRE FEUX ROUGES -->
+                        <div class="lg:col-span-4 space-y-5">
+                            <div class="text-2xl font-black tracking-tight text-white">
+                                Drive<span class="text-drive-red">X</span>
+                            </div>
+                            <div class="text-[9px] uppercase tracking-widest text-slate-400 font-bold -mt-3">
+                                DRIVE YOUR EXCELLENCE
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+                                Votre destination de référence pour l'importation de pièces automobiles d'origine usine. Pièces certifiées, traçabilité rigoureuse, approvisionnement direct depuis l'Allemagne.
+                            </p>
+                            
+                            <!-- Icônes réseaux sociaux dans cercles discrets -->
+                            <div class="flex items-center space-x-2.5 pt-1">
+                                <a href="#" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-drive-red text-slate-400 hover:text-white flex items-center justify-center text-xs transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="#" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-drive-red text-slate-400 hover:text-white flex items-center justify-center text-xs transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="#" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-drive-red text-slate-400 hover:text-white flex items-center justify-center text-xs transition-colors"><i class="fa-brands fa-linkedin-in"></i></a>
+                                <a href="#" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-drive-red text-slate-400 hover:text-white flex items-center justify-center text-xs transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                            </div>
+
+                            <!-- Photo arrière de voiture sportive avec signature lumineuse rouge LED (exactement comme dans le footer DriveX) -->
+                            <div class="pt-3 relative">
+                                <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=400&q=80" alt="Feux LED Porsche arrière" class="w-48 h-20 object-cover rounded-xl opacity-80 border border-slate-800">
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-drive-black"></div>
+                            </div>
+                        </div>
+
+                        <!-- COLONNE 2 : EXPLORE LINKS -->
+                        <div class="lg:col-span-2 space-y-3">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-white">Explore</h4>
+                            <ul class="space-y-2 text-xs text-slate-400">
+                                <li><a href="#" class="hover:text-white transition-colors">Accueil Vitrine</a></li>
+                                <li><a href="#selection" class="hover:text-white transition-colors">Pièces Phares</a></li>
+                                <li><a href="#gammes" class="hover:text-white transition-colors">Univers OEM</a></li>
+                                <li><a href="#partenaires" class="hover:text-white transition-colors">Équipementiers</a></li>
+                                <li><a href="#actualites" class="hover:text-white transition-colors">Déstockage Live</a></li>
+                                <li><a href="javascript:void(0)" onclick="openCatalogPage('all')" class="hover:text-drive-red transition-colors font-bold text-white">Catalogue & Filtres</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- COLONNE 3 : SUPPORT & INFRASTRUCTURE AWS -->
+                        <div class="lg:col-span-2 space-y-3">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-white">Support & AWS</h4>
+                            <ul class="space-y-2 text-xs text-slate-400">
+                                <li><a href="#contact" class="hover:text-white transition-colors">Demande de Devis</a></li>
+                                <li><a href="#process" class="hover:text-white transition-colors">Process en 4 Étapes</a></li>
+                                <li><a href="#avis" class="hover:text-white transition-colors">Avis & Témoignages</a></li>
+                                <li><a href="javascript:void(0)" onclick="toggleAdminBar()" class="text-slate-300 hover:text-white transition-colors"><i class="fa-solid fa-lock text-[10px] mr-1"></i>Espace Admin</a></li>
+                                <li><span class="text-[11px] text-emerald-400 block mt-2 font-mono">AWS Route 53 DNS</span></li>
+                                <li><span class="text-[11px] text-slate-400 block font-mono">Amazon WorkMail</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- COLONNE 4 : CONTACT INFO -->
+                        <div class="lg:col-span-2 space-y-3">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-white">Contact</h4>
+                            <div class="space-y-3 text-xs text-slate-400">
+                                <div>
+                                    <div class="text-[10px] text-slate-500 uppercase">Téléphone</div>
+                                    <div class="text-white font-bold">+33 1 89 00 00 00</div>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-slate-500 uppercase">Email Pro AWS</div>
+                                    <div class="text-white font-mono text-[11px]">contact@deutschparts-import.com</div>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-slate-500 uppercase">Hubs Logistiques</div>
+                                    <div class="text-slate-300">Francfort • Paris • Antananarivo</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COLONNE 5 : STAY UPDATED (NEWSLETTER AVEC CHAMP SOMBRE & FLÈCHE ROUGE) -->
+                        <div class="lg:col-span-2 space-y-3">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-white">Stay Updated</h4>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">
+                                Recevez les alertes arrivages et déstockages usine en avant-première.
+                            </p>
+                            <form onsubmit="event.preventDefault(); alert('Merci pour votre inscription à la newsletter !');" class="space-y-2">
+                                <div class="relative">
+                                    <input type="email" required placeholder="Enter your email" class="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-drive-red pr-10">
+                                    <button type="submit" class="absolute right-1.5 top-1.5 w-7 h-7 rounded-lg bg-drive-red hover:bg-drive-darkred text-white flex items-center justify-center text-[10px] transition-colors">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                                <label class="flex items-center space-x-1.5 text-[10px] text-slate-500">
+                                    <input type="checkbox" required class="rounded bg-slate-900 border-slate-700 text-drive-red focus:ring-0">
+                                    <span>J'accepte de recevoir les alertes.</span>
+                                </label>
                             </form>
-                            <div id="contactSuccess" class="hidden mt-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs">
-                                Demande transmise avec succès sur contact@deutschparts-import.com !
-                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- BARRE DE COPYRIGHT INFÉRIEURE DRIVEX -->
+                    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-3">
+                        <div>
+                            © 2026 DriveX • DEUTSCHPARTS IMPORT. All rights reserved.
+                        </div>
+                        <div class="flex items-center space-x-6">
+                            <a href="#" class="hover:text-slate-300 transition-colors">Privacy Policy</a>
+                            <span>|</span>
+                            <a href="#" class="hover:text-slate-300 transition-colors">Terms & Conditions</a>
+                            <span>|</span>
+                            <a href="#" class="hover:text-slate-300 transition-colors">Sitemap</a>
+                        </div>
+                        <div class="text-right text-[10px] uppercase font-bold text-slate-600">
+                            MORE THAN A PIECE • A BETTER TOMORROW
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <footer class="bg-white border-t border-slate-200 py-10">
-            <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
-                <div>DEUTSCHPARTS IMPORT • Hébergé & Sécurisé sur AWS</div>
-                <div>
-                    <button onclick="toggleAdminBar()" class="text-slate-400 hover:text-slate-600 text-[10px] underline">
-                        Accès Espace Administrateur (Interne)
-                    </button>
                 </div>
-            </div>
-        </footer>
+            </footer>
     </div>
 
     <!-- ===================================================================== -->
-    <!-- VUE 2 : CATALOGUE DÉDIÉ AVEC FILTRES                                  -->
+    <!-- VUE 2 : CATALOGUE DÉDIÉ AVEC FILTRES & RECHERCHE AVANCÉE               -->
     <!-- ===================================================================== -->
-    <div id="catalogPageView" class="hidden min-h-screen bg-slate-50">
-        <div class="german-gradient-bar"></div>
-        <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-                <button onclick="switchMainView('site')" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center space-x-2 border border-slate-200">
+    <div id="catalogPageView" class="hidden min-h-screen w-full bg-slate-50 relative">
+        <div class="german-topline"></div>
+        
+        <header class="bg-white border-b border-slate-100 sticky top-0 z-40 p-5 sm:p-6 flex items-center justify-between">
+                <button onclick="switchMainView('site')" class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center space-x-2 transition-all">
                     <i class="fa-solid fa-arrow-left"></i>
-                    <span>Retour à l'accueil</span>
+                    <span>Retour à l'accueil DriveX</span>
                 </button>
-                <h1 class="text-base sm:text-xl font-extrabold text-slate-900">Catalogue Détaillé • Pièces Allemandes OEM</h1>
-            </div>
-        </header>
+                <div class="text-center">
+                    <h1 class="text-lg sm:text-xl font-black text-drive-black">Catalogue de Pièces Allemandes OEM</h1>
+                    <span class="text-[11px] text-slate-400">Recherche directe par mot-clé, équipementier et référence</span>
+                </div>
+                <div class="w-24 hidden sm:block"></div>
+            </header>
 
-        <div class="max-w-7xl mx-auto px-4 py-10">
-            <div class="grid lg:grid-cols-12 gap-8 items-start">
-                <!-- Filtres -->
-                <aside class="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 space-y-5 shadow-sm">
-                    <div class="flex justify-between items-center border-b pb-3">
-                        <h3 class="font-bold text-sm text-slate-900"><i class="fa-solid fa-filter text-red-600 mr-2"></i>Filtres</h3>
-                        <button onclick="resetCatalogFilters()" class="text-xs text-red-600 font-semibold">Réinitialiser</button>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Recherche</label>
-                        <input type="text" id="filterSearch" oninput="applyCatalogFilters()" placeholder="Ex: Disque, ATE, Golf..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Gamme</label>
-                        <select id="filterGamme" onchange="updatePieceTypesDropdown(); applyCatalogFilters();" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-semibold">
-                            <option value="all">Toutes les gammes</option>
-                            <option value="freinage">Sécurité & Freinage</option>
-                            <option value="moteur">Moteur & Filtration</option>
-                            <option value="suspension">Train Roulant & Suspension</option>
-                            <option value="transmission">Transmission & Boîte</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Marque (Équipementier)</label>
-                        <select id="filterBrand" onchange="applyCatalogFilters()" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-semibold">
-                            <option value="all">Toutes les marques</option>
-                            <option value="ATE">ATE</option>
-                            <option value="Bosch">Bosch</option>
-                            <option value="ZF">ZF</option>
-                            <option value="Lemförder">Lemförder</option>
-                            <option value="Meyle HD">Meyle HD</option>
-                            <option value="INA">INA</option>
-                            <option value="Mann-Filter">Mann-Filter</option>
-                            <option value="Bilstein">Bilstein</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Type de pièce</label>
-                        <select id="filterType" onchange="applyCatalogFilters()" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-semibold">
-                            <option value="all">Tous les types</option>
-                        </select>
-                    </div>
-                </aside>
+            <div class="p-6 sm:p-8 lg:p-10">
+                <div class="grid lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Panneau des filtres -->
+                    <aside class="lg:col-span-4 bg-slate-50 border border-slate-200/90 rounded-2xl p-6 space-y-5">
+                        <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                            <h3 class="font-black text-sm text-drive-black flex items-center gap-2">
+                                <i class="fa-solid fa-sliders text-drive-red"></i>
+                                <span>Filtres de recherche</span>
+                            </h3>
+                            <button onclick="resetCatalogFilters()" class="text-xs text-drive-red hover:underline font-bold">Réinitialiser</button>
+                        </div>
 
-                <!-- Grille pièces -->
-                <div class="lg:col-span-8 space-y-4">
-                    <div class="bg-white border border-slate-200 px-5 py-3 rounded-xl text-xs text-slate-600 shadow-sm">
-                        Résultats : <strong id="catalogResultCount" class="text-slate-900 font-bold">0</strong> pièce(s)
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Recherche mot-clé ou réf OEM</label>
+                            <input type="text" id="filterSearch" oninput="applyCatalogFilters()" placeholder="Ex: Disque, ATE, Golf, N47..." class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-xs focus:outline-none focus:border-drive-black">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Gamme principale</label>
+                            <select id="filterGamme" onchange="updatePieceTypesDropdown(); applyCatalogFilters();" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-xs font-semibold focus:outline-none focus:border-drive-black">
+                                <option value="all">Toutes les gammes</option>
+                                <option value="freinage">Sécurité & Freinage</option>
+                                <option value="moteur">Moteur & Filtration</option>
+                                <option value="suspension">Train Roulant & Suspension</option>
+                                <option value="transmission">Transmission & Boîte BVA</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Équipementier (Marque OEM)</label>
+                            <select id="filterBrand" onchange="applyCatalogFilters()" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-xs font-semibold focus:outline-none focus:border-drive-black">
+                                <option value="all">Toutes les marques</option>
+                                <option value="ATE">ATE</option>
+                                <option value="Bosch">Bosch</option>
+                                <option value="ZF">ZF Group</option>
+                                <option value="Lemförder">Lemförder</option>
+                                <option value="Meyle HD">Meyle HD</option>
+                                <option value="INA">INA</option>
+                                <option value="Mann-Filter">Mann-Filter</option>
+                                <option value="Bilstein">Bilstein</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Type de composant</label>
+                            <select id="filterType" onchange="applyCatalogFilters()" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-xs font-semibold focus:outline-none focus:border-drive-black">
+                                <option value="all">Tous les types</option>
+                            </select>
+                        </div>
+                    </aside>
+
+                    <!-- Grille des pièces filtrées -->
+                    <div class="lg:col-span-8 space-y-4">
+                        <div class="bg-slate-50 border border-slate-200 px-5 py-3 rounded-xl text-xs text-slate-600 flex justify-between items-center">
+                            <div>
+                                Pièces trouvées : <strong id="catalogResultCount" class="text-drive-black font-bold">0</strong> référence(s)
+                            </div>
+                            <span class="text-[11px] text-slate-400">Origine certifiée 100% Première Monte</span>
+                        </div>
+
+                        <div id="catalogPartsGrid" class="grid sm:grid-cols-2 gap-4"></div>
+
+                        <div id="catalogEmptyState" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-12 text-center text-xs text-slate-500">
+                            <i class="fa-solid fa-boxes-stacked text-3xl text-slate-300 mb-3 block"></i>
+                            Aucune pièce ne correspond à vos critères. Essayez de réinitialiser les filtres ou demandez une recherche manuelle par numéro VIN.
+                        </div>
                     </div>
-                    <div id="catalogPartsGrid" class="grid sm:grid-cols-2 gap-4"></div>
-                    <div id="catalogEmptyState" class="hidden bg-white border border-slate-200 rounded-2xl p-10 text-center text-xs text-slate-500">
-                        Aucune pièce ne correspond à vos filtres.
-                    </div>
+
                 </div>
             </div>
-        </div>
     </div>
 
     <!-- ===================================================================== -->
-    <!-- VUE 3 : ESPACE ADMIN (STATS & AWS)                                    -->
+    <!-- VUE 3 : ESPACE ADMIN (STATS DE VISITE & MARKETING AWS)                -->
     <!-- ===================================================================== -->
-    <div id="adminDashboardView" class="hidden min-h-screen bg-slate-100 py-10">
-        <div class="max-w-7xl mx-auto px-4 space-y-8">
-            <div class="flex justify-between items-center bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+    <div id="adminDashboardView" class="hidden min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto space-y-8">
+            
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white border border-slate-200 p-6 rounded-3xl shadow-sm gap-4">
                 <div>
-                    <h1 class="text-2xl font-extrabold text-slate-900">Espace Admin : Stats & AWS</h1>
-                    <p class="text-xs text-slate-500">Suivi des visites, gestion des actus marketing et architecture AWS.</p>
+                    <h1 class="text-2xl font-black text-drive-black">Espace Administration & Marketing</h1>
+                    <p class="text-xs text-slate-500">Gestion des offres déstockage, suivi des visites et infrastructure AWS.</p>
                 </div>
-                <button onclick="switchMainView('site')" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold">Retour Site</button>
+                <button onclick="switchMainView('site')" class="px-5 py-2.5 bg-drive-black hover:bg-slate-800 text-white rounded-full text-xs font-bold transition-all">
+                    <i class="fa-solid fa-arrow-left mr-1.5"></i>Retour à la Vitrine
+                </button>
             </div>
 
-            <!-- Stats -->
-            <div class="grid sm:grid-cols-3 gap-4">
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                    <div class="text-xs text-slate-500">Visiteurs Uniques (Mois)</div>
-                    <div class="text-3xl font-extrabold text-slate-900 mt-2">4 890</div>
+            <!-- Statistiques de visite -->
+            <div class="grid sm:grid-cols-3 gap-5">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Visiteurs Uniques (30 jours)</div>
+                    <div class="text-3xl font-black text-drive-black mt-2">4 890</div>
+                    <div class="text-[11px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-arrow-trend-up mr-1"></i>+18% ce mois</div>
                 </div>
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                    <div class="text-xs text-slate-500">Clics sur Promos</div>
-                    <div class="text-3xl font-extrabold text-amber-600 mt-2">1 145</div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Clics Offres Déstockage</div>
+                    <div class="text-3xl font-black text-amber-600 mt-2">1 145</div>
+                    <div class="text-[11px] text-slate-500 mt-1">Fort intérêt sur Bilstein & ZF</div>
                 </div>
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                    <div class="text-xs text-slate-500">Contacts Générés</div>
-                    <div class="text-3xl font-extrabold text-emerald-600 mt-2">218</div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Demandes de Devis (Leads)</div>
+                    <div class="text-3xl font-black text-emerald-600 mt-2">218</div>
+                    <div class="text-[11px] text-slate-500 mt-1">Reçues via contact@deutschparts-import.com</div>
                 </div>
             </div>
 
-            <!-- Ajout Actu -->
-            <div class="grid lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-5 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
-                    <h3 class="font-bold text-sm text-slate-900 mb-4">Publier une actualité / déstockage</h3>
+            <!-- Formulaire ajout actualité marketing -->
+            <div class="grid lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-5 bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4">
+                    <h3 class="font-bold text-sm text-drive-black flex items-center gap-2">
+                        <i class="fa-solid fa-bullhorn text-drive-red"></i>
+                        <span>Publier une offre ou déstockage</span>
+                    </h3>
                     <form onsubmit="addMarketingNews(event)" class="space-y-3">
-                        <select id="newsType" class="w-full px-3 py-2 rounded-xl bg-slate-50 border text-xs">
-                            <option value="DESTOCKAGE">🔥 DÉSTOCKAGE</option>
-                            <option value="PROMOTION">🏷️ PROMOTION</option>
-                            <option value="ARRIVAGE">✈️ ARRIVAGE</option>
-                        </select>
-                        <input type="text" id="newsTitle" required placeholder="Titre de l'offre" class="w-full px-3 py-2 rounded-xl bg-slate-50 border text-xs">
-                        <input type="text" id="newsBadge" required placeholder="Badge (ex: -30%)" class="w-full px-3 py-2 rounded-xl bg-slate-50 border text-xs">
-                        <textarea id="newsDesc" rows="2" required placeholder="Description..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border text-xs"></textarea>
-                        <button type="submit" class="w-full py-2.5 bg-red-600 text-white rounded-xl text-xs font-bold">Publier</button>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Catégorie</label>
+                            <select id="newsType" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold">
+                                <option value="DESTOCKAGE">🔥 DÉSTOCKAGE</option>
+                                <option value="PROMOTION">🏷️ PROMOTION</option>
+                                <option value="ARRIVAGE">✈️ ARRIVAGE DIRECT</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Titre de l'annonce</label>
+                            <input type="text" id="newsTitle" required placeholder="Ex: Arrivage disques ATE Ceramic" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Badge promo</label>
+                            <input type="text" id="newsBadge" required placeholder="Ex: -25% ou Offre Garage" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Description</label>
+                            <textarea id="newsDesc" rows="3" required placeholder="Détails du lot ou des véhicules compatibles..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-drive-black hover:bg-drive-red text-white rounded-full text-xs font-bold uppercase tracking-wider transition-all">
+                            Publier sur la vitrine
+                        </button>
                     </form>
                 </div>
-                <div class="lg:col-span-7 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
-                    <h3 class="font-bold text-sm text-slate-900 mb-4">Annonces actives</h3>
+
+                <!-- Liste des annonces actives -->
+                <div class="lg:col-span-7 bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4">
+                    <h3 class="font-bold text-sm text-drive-black">Annonces actives sur le site</h3>
                     <div id="adminNewsList" class="space-y-3"></div>
                 </div>
             </div>
 
-            <!-- AWS Info -->
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3">
-                <h3 class="font-bold text-sm text-slate-900"><i class="fa-brands fa-aws text-amber-500 mr-2"></i>Infrastructure AWS</h3>
-                <p class="text-xs text-slate-600">Domaine configuré sur <strong class="text-slate-900">Route 53</strong>, emails pro hébergés via <strong class="text-slate-900">Amazon WorkMail / SES</strong> (contact@deutschparts-import.com) et hébergement statique rapide sur <strong class="text-slate-900">AWS CloudFront</strong>.</p>
+            <!-- AWS Info Architecture -->
+            <div class="bg-white border border-slate-200 p-6 sm:p-8 rounded-3xl shadow-sm space-y-4">
+                <h3 class="font-bold text-sm text-drive-black flex items-center gap-2">
+                    <i class="fa-brands fa-aws text-amber-500 text-lg"></i>
+                    <span>Configuration Nom de Domaine & Messagerie AWS</span>
+                </h3>
+                <div class="grid sm:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="font-bold text-slate-900">Route 53 DNS</div>
+                        <p class="text-slate-500 mt-1">Gestion DNS haute performance avec routage mondial à très faible latence.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="font-bold text-slate-900">Amazon WorkMail / SES</div>
+                        <p class="text-slate-500 mt-1">Boîtes e-mail pros sécurisées (contact@deutschparts-import.com) avec SPF, DKIM et DMARC.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="font-bold text-slate-900">AWS CloudFront & S3</div>
+                        <p class="text-slate-500 mt-1">Hébergement vitrine statique ultra-rapide, sécurisé par certificat SSL/TLS gratuit ACM.</p>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
+    <!-- ===================================================================== -->
+    <!-- LOGIQUE JAVASCRIPT : DONNÉES CATALOGUE, FILTRES, ACTUS & SLIDER HERO  -->
+    <!-- ===================================================================== -->
     <script>
+        // Données du catalogue avec références OEM certifiées
         const catalogPartsData = [
-            { id: 1, name: "Disques de Frein Avant Ventilés", gamme: "freinage", brand: "ATE", type: "Disques de frein", compat: "VW Golf 7, Audi A3", oemRef: "OEM 5Q0 615 301", badge: "En stock", img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=600&q=80" },
-            { id: 2, name: "Plaquettes Céramiques Zéro Poussière", gamme: "freinage", brand: "ATE", type: "Plaquettes de frein", compat: "BMW Série 3, Série 5", oemRef: "OEM 34 11 6 850", badge: "Ceramic", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" },
-            { id: 3, name: "Kit Chaîne de Distribution Renforcé", gamme: "moteur", brand: "INA", type: "Kit distribution", compat: "BMW N47 / B47", oemRef: "OEM 11 31 8 510", badge: "Best-seller", img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80" },
-            { id: 4, name: "Pack Filtration Complet", gamme: "moteur", brand: "Mann-Filter", type: "Filtres", compat: "VW / Audi 2.0 TDI", oemRef: "OEM HU 7020", badge: "OEM", img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80" },
-            { id: 5, name: "Kit Bras de Suspension Renforcé", gamme: "suspension", brand: "Meyle HD", type: "Bras de suspension", compat: "BMW X5 / Série 5", oemRef: "OEM 31 12 6 775", badge: "Meyle HD", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" },
-            { id: 6, name: "Amortisseurs Avant Bilstein B4", gamme: "suspension", brand: "Bilstein", type: "Amortisseurs", compat: "Mercedes Classe C", oemRef: "OEM 22-241664", badge: "Gaz", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" }
+            { id: 1, name: "Disques de Frein Avant Ventilés OEM", gamme: "freinage", brand: "ATE", type: "Disques de frein", compat: "VW Golf 7, Audi A3, Seat Leon", oemRef: "OEM 5Q0 615 301", badge: "En stock usine", img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, name: "Plaquettes Céramiques Zéro Poussière", gamme: "freinage", brand: "ATE", type: "Plaquettes de frein", compat: "BMW Série 3 (F30), Série 5 (G30)", oemRef: "OEM 34 11 6 850", badge: "Ceramic Pro", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, name: "Kit Chaîne de Distribution Renforcé", gamme: "moteur", brand: "INA", type: "Kit distribution", compat: "BMW N47 / B47 2.0d", oemRef: "OEM 11 31 8 510", badge: "Best-seller OEM", img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, name: "Pack Filtration Complète Huile/Air/Habitacle", gamme: "moteur", brand: "Mann-Filter", type: "Filtres", compat: "VW / Audi 2.0 TDI & TFSI", oemRef: "OEM HU 7020", badge: "Origine 100%", img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, name: "Kit Bras de Suspension Renforcé Meyle HD", gamme: "suspension", brand: "Meyle HD", type: "Bras de suspension", compat: "BMW X5 (F15) / Série 5", oemRef: "OEM 31 12 6 775", badge: "Garantie 4 ans", img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, name: "Amortisseurs Avant Bilstein B4 à Gaz", gamme: "suspension", brand: "Bilstein", type: "Amortisseurs", compat: "Mercedes Classe C (W205), Classe E", oemRef: "OEM 22-241664", badge: "Première monte", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" },
+            { id: 7, name: "Kit Vidange BVA ZF 8HP avec Carter et Huile", gamme: "transmission", brand: "ZF", type: "Kit boîte de vitesses", compat: "BMW, Audi, Porsche Panamera", oemRef: "OEM 1087 298 365", badge: "Huile ZF Lifeguard", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" }
         ];
 
+        // Actualités & promotions marketing modifiables dynamiquement
         let marketingNews = [
-            { id: 1, type: "DESTOCKAGE", title: "Arrivage direct amortisseurs Bilstein B4", badge: "-25%", date: "Il y a 2 jours", desc: "Lot spécial en provenance directe de l'usine d'Ennepetal en Allemagne." },
-            { id: 2, type: "PROMOTION", title: "Kits de distribution INA pour blocs TDI", badge: "Offre pro", date: "Il y a 5 jours", desc: "Tarifs préférentiels sur les références phares pour nos garages partenaires." }
+            { id: 1, type: "DESTOCKAGE", title: "Arrivage direct amortisseurs Bilstein B4", badge: "-25%", date: "Il y a 2 jours", desc: "Lot d'origine en provenance directe de l'usine d'Ennepetal en Allemagne pour Mercedes et BMW." },
+            { id: 2, type: "PROMOTION", title: "Kits de distribution INA pour blocs TDI", badge: "Tarif Pro", date: "Il y a 5 jours", desc: "Tarifs préférentiels sur les références phares pour tous nos garages partenaires réguliers." },
+            { id: 3, type: "ARRIVAGE", title: "Kits de vidange ZF 8HP avec carter filtrant", badge: "Stock Limité", date: "Cette semaine", desc: "Huile officielle ZF LifeguardFluid 8 et aimants neufs pour boîtes automatiques 8 rapports." }
         ];
 
+        // Témoignages clients
+        const testimonials = [
+            {
+                name: "Marc R.",
+                role: "Garage EuroTech Auto • Paris",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+                quote: "Zéro retour sous garantie sur les bras Lemförder et amortisseurs Bilstein. Qualité d'origine irréprochable et identification par châssis fiable."
+            },
+            {
+                name: "Tiana A.",
+                role: "Propriétaire BMW X5 E70",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+                quote: "Kit vidange boîte ZF officiel reçu en 48h pour mon BMW X5. Tarif deux fois inférieur à la concession avec la véritable huile ZF Lifeguard."
+            },
+            {
+                name: "Sophie L.",
+                role: "Responsable Flotte Véhicules Allemands",
+                avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80",
+                quote: "Les arrivages programmés et les déstockages sur Mann-Filter et ATE nous permettent d'optimiser nos coûts sans compromis sur la longévité."
+            }
+        ];
+        let currentTestiIndex = 0;
+
+        function updateTestimonial() {
+            const t = testimonials[currentTestiIndex];
+            document.getElementById('testiName').textContent = t.name;
+            document.getElementById('testiRole').textContent = t.role;
+            document.getElementById('testiAvatar').src = t.avatar;
+            document.getElementById('testiQuote').textContent = `"${t.quote}"`;
+        }
+
+        function nextTestimonial() {
+            currentTestiIndex = (currentTestiIndex + 1) % testimonials.length;
+            updateTestimonial();
+        }
+
+        function prevTestimonial() {
+            currentTestiIndex = (currentTestiIndex - 1 + testimonials.length) % testimonials.length;
+            updateTestimonial();
+        }
+
+        // Carrousel de véhicules du Hero façon DriveX
+        const heroCars = [
+            {
+                img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=85",
+                model: "Porsche 911 Carrera",
+                parts: "Freins ATE Céramique & Boîte ZF 8HP"
+            },
+            {
+                img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=85",
+                model: "BMW M-Power X5 / Série 5",
+                parts: "Suspensions Meyle HD & Distribution INA"
+            },
+            {
+                img: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1200&q=85",
+                model: "Mercedes-AMG Classe C / E",
+                parts: "Amortisseurs Bilstein B4 & Élec Bosch"
+            },
+            {
+                img: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=85",
+                model: "Audi RS Performance",
+                parts: "Disques ATE Ventilés & Filtration Mann-Filter"
+            }
+        ];
+
+        let currentHeroCarIndex = 0;
+
+        function setHeroCarIndex(index) {
+            currentHeroCarIndex = index;
+            updateHeroCarDisplay();
+        }
+
+        function nextHeroCar() {
+            currentHeroCarIndex = (currentHeroCarIndex + 1) % heroCars.length;
+            updateHeroCarDisplay();
+        }
+
+        function prevHeroCar() {
+            currentHeroCarIndex = (currentHeroCarIndex - 1 + heroCars.length) % heroCars.length;
+            updateHeroCarDisplay();
+        }
+
+        function updateHeroCarDisplay() {
+            const car = heroCars[currentHeroCarIndex];
+            const img = document.getElementById('heroCarImage');
+            const model = document.getElementById('heroCarModel');
+            const parts = document.getElementById('heroCarParts');
+
+            if (img) {
+                img.style.opacity = '0.4';
+                setTimeout(() => {
+                    img.src = car.img;
+                    img.style.opacity = '1';
+                }, 150);
+            }
+            if (model) model.textContent = car.model;
+            if (parts) parts.textContent = car.parts;
+
+            // Mise à jour des points de contrôle
+            const dots = document.querySelectorAll('.hero-dot');
+            dots.forEach((dot, idx) => {
+                if (idx === currentHeroCarIndex) {
+                    dot.className = "hero-dot w-6 h-1.5 rounded-full bg-drive-black transition-all";
+                } else {
+                    dot.className = "hero-dot w-2 h-1.5 rounded-full bg-slate-300 transition-all";
+                }
+            });
+        }
+
+        // Bascule entre les 3 vues (Vitrine, Catalogue, Admin)
         function switchMainView(viewName) {
             document.getElementById('publicSiteView').classList.add('hidden');
             document.getElementById('catalogPageView').classList.add('hidden');
@@ -451,52 +1414,37 @@
             const btnCat = document.getElementById('btnViewCatalog');
             const btnAdm = document.getElementById('btnViewAdmin');
 
-            if (btnSite) btnSite.className = "px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900";
-            if (btnCat) btnCat.className = "px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900";
-            if (btnAdm) btnAdm.className = "px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900";
+            if (btnSite) btnSite.className = "px-3 py-1.5 rounded-lg font-bold transition-all text-slate-300 hover:text-white";
+            if (btnCat) btnCat.className = "px-3 py-1.5 rounded-lg font-bold transition-all text-slate-300 hover:text-white";
+            if (btnAdm) btnAdm.className = "px-3 py-1.5 rounded-lg font-bold transition-all text-slate-300 hover:text-white";
 
             if (viewName === 'site') {
                 document.getElementById('publicSiteView').classList.remove('hidden');
-                if (btnSite) btnSite.className = "px-3 py-1.5 rounded-md font-semibold transition-all bg-red-600 text-white shadow-sm";
+                if (btnSite) btnSite.className = "px-3 py-1.5 rounded-lg font-bold transition-all bg-white text-drive-black shadow-sm";
             } else if (viewName === 'catalog') {
                 document.getElementById('catalogPageView').classList.remove('hidden');
-                if (btnCat) btnCat.className = "px-3 py-1.5 rounded-md font-semibold transition-all bg-red-600 text-white shadow-sm";
+                if (btnCat) btnCat.className = "px-3 py-1.5 rounded-lg font-bold transition-all bg-white text-drive-black shadow-sm";
             } else if (viewName === 'admin') {
                 document.getElementById('adminDashboardView').classList.remove('hidden');
-                if (btnAdm) btnAdm.className = "px-3 py-1.5 rounded-md font-semibold transition-all bg-red-600 text-white shadow-sm";
+                if (btnAdm) btnAdm.className = "px-3 py-1.5 rounded-lg font-bold transition-all bg-white text-drive-black shadow-sm";
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Afficher / masquer la barre maquette
         function toggleAdminBar() {
             const bar = document.getElementById('maquetteBar');
+            const nav = document.getElementById('mainNavbar');
             if (bar.classList.contains('hidden')) {
                 bar.classList.remove('hidden');
-                alert("Mode maquette/administration activé pour la démonstration.");
+                if (nav) nav.style.top = bar.offsetHeight + 'px';
             } else {
                 bar.classList.add('hidden');
+                if (nav) nav.style.top = '0px';
             }
         }
 
-        function filterHomePageProducts(category, btnElement) {
-            // Mise à jour visuelle des boutons de filtre de la page d'accueil
-            document.querySelectorAll('#productFilters .filter-btn').forEach(btn => {
-                btn.className = "filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-all";
-            });
-            btnElement.className = "filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow-sm transition-all";
-
-            // Filtrage des cartes sur la page d'accueil
-            const cards = document.querySelectorAll('#productGrid .product-card');
-            cards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                if (category === 'all' || cardCategory === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
+        // Ouvrir la page catalogue filtrée
         function openCatalogPage(gamme = 'all') {
             switchMainView('catalog');
             document.getElementById('filterGamme').value = gamme;
@@ -504,6 +1452,7 @@
             applyCatalogFilters();
         }
 
+        // Mettre à jour la liste des types de pièces selon la gamme
         function updatePieceTypesDropdown() {
             const gamme = document.getElementById('filterGamme').value;
             const typeSelect = document.getElementById('filterType');
@@ -516,6 +1465,7 @@
             });
         }
 
+        // Appliquer les filtres du catalogue
         function applyCatalogFilters() {
             const search = document.getElementById('filterSearch').value.toLowerCase();
             const gamme = document.getElementById('filterGamme').value;
@@ -526,7 +1476,7 @@
                 return (gamme === 'all' || p.gamme === gamme) &&
                        (brand === 'all' || p.brand === brand) &&
                        (type === 'all' || p.type === type) &&
-                       (!search || p.name.toLowerCase().includes(search) || p.brand.toLowerCase().includes(search));
+                       (!search || p.name.toLowerCase().includes(search) || p.brand.toLowerCase().includes(search) || p.compat.toLowerCase().includes(search) || p.oemRef.toLowerCase().includes(search));
             });
 
             const grid = document.getElementById('catalogPartsGrid');
@@ -544,21 +1494,29 @@
 
             filtered.forEach(p => {
                 grid.innerHTML += `
-                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between p-4">
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-card hover:-translate-y-1 transition-all flex flex-col justify-between p-4">
                         <div>
-                            <img src="${p.img}" class="w-full h-36 object-cover rounded-xl mb-3">
-                            <span class="text-[10px] font-bold bg-slate-100 px-2 py-0.5 rounded text-slate-700">${p.brand}</span>
-                            <h4 class="font-extrabold text-sm text-slate-900 mt-1">${p.name}</h4>
-                            <p class="text-xs text-slate-500 mt-1">${p.compat} • ${p.oemRef}</p>
+                            <div class="relative w-full h-40 rounded-xl overflow-hidden mb-3 bg-slate-100">
+                                <img src="${p.img}" class="w-full h-full object-cover">
+                                <span class="absolute top-2 right-2 text-[10px] font-bold bg-drive-black text-white px-2 py-0.5 rounded-full">${p.badge}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold bg-slate-100 px-2 py-0.5 rounded text-slate-700">${p.brand}</span>
+                                <span class="text-[10px] text-slate-400 font-mono">${p.oemRef}</span>
+                            </div>
+                            <h4 class="font-extrabold text-sm text-drive-black mt-1.5 leading-snug">${p.name}</h4>
+                            <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-car text-[10px] mr-1 text-slate-400"></i>${p.compat}</p>
                         </div>
-                        <button onclick="requestQuote('${p.name}')" class="mt-4 w-full py-2 bg-slate-900 hover:bg-red-600 text-white rounded-xl text-xs font-bold transition-colors">
-                            Demander un devis
+                        <button onclick="requestQuote('${p.name} (${p.brand} - ${p.oemRef})')" class="mt-4 w-full py-2.5 bg-drive-black hover:bg-drive-red text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                            <span>Demander un devis express</span>
                         </button>
                     </div>
                 `;
             });
         }
 
+        // Réinitialiser les filtres du catalogue
         function resetCatalogFilters() {
             document.getElementById('filterSearch').value = '';
             document.getElementById('filterGamme').value = 'all';
@@ -567,16 +1525,16 @@
             applyCatalogFilters();
         }
 
+        // Demander un devis pour une pièce (remplit le formulaire et scroll vers le contact)
         function requestQuote(pieceName) {
             switchMainView('site');
-            document.querySelector('#contact textarea').value = `Bonjour, je souhaite un devis pour la pièce : ${pieceName}`;
-            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            const textarea = document.getElementById('quoteTextarea');
+            if (textarea) textarea.value = `Bonjour, je souhaite un devis pour la pièce suivante :\n- ${pieceName}`;
+            const contactSection = document.getElementById('contact');
+            if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function filterProducts(cat) {
-            openCatalogPage(cat);
-        }
-
+        // Rendu des actualités marketing (Vitrine & Admin)
         function renderNews() {
             const container = document.getElementById('publicNewsContainer');
             const adminList = document.getElementById('adminNewsList');
@@ -586,27 +1544,42 @@
             marketingNews.forEach(n => {
                 if (container) {
                     container.innerHTML += `
-                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="px-2 py-0.5 text-[10px] font-bold bg-red-50 text-red-600 rounded">${n.type}</span>
-                                <span class="text-xs font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">${n.badge}</span>
+                        <div class="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm hover:shadow-card transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="px-2.5 py-1 text-[10px] font-bold bg-slate-100 text-slate-800 rounded-full">${n.type}</span>
+                                    <span class="text-xs font-bold bg-red-50 text-drive-red px-2.5 py-0.5 rounded-full border border-red-200">${n.badge}</span>
+                                </div>
+                                <h3 class="font-extrabold text-drive-black text-base leading-snug">${n.title}</h3>
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">${n.desc}</p>
                             </div>
-                            <h3 class="font-bold text-slate-900">${n.title}</h3>
-                            <p class="text-xs text-slate-600 mt-2">${n.desc}</p>
+                            <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <span class="text-[10px] text-slate-400">${n.date}</span>
+                                <button onclick="requestQuote('Offre marketing : ${n.title}')" class="text-xs font-bold text-drive-black hover:text-drive-red transition-colors flex items-center gap-1">
+                                    <span>Réserver ce lot</span>
+                                    <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                                </button>
+                            </div>
                         </div>
                     `;
                 }
                 if (adminList) {
                     adminList.innerHTML += `
-                        <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border text-xs">
-                            <div><strong>${n.title}</strong> (${n.badge})</div>
-                            <button onclick="deleteNews(${n.id})" class="text-red-600 font-bold">Supprimer</button>
+                        <div class="flex justify-between items-center bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs">
+                            <div>
+                                <div class="font-bold text-slate-900">${n.title} <span class="text-drive-red font-extrabold ml-1">${n.badge}</span></div>
+                                <div class="text-[11px] text-slate-500">${n.type} • ${n.date}</div>
+                            </div>
+                            <button onclick="deleteNews(${n.id})" class="text-red-600 hover:text-red-800 font-bold px-3 py-1 rounded-lg bg-red-50 hover:bg-red-100 transition-colors">
+                                <i class="fa-solid fa-trash-can mr-1"></i>Supprimer
+                            </button>
                         </div>
                     `;
                 }
             });
         }
 
+        // Ajouter une actualité marketing
         function addMarketingNews(e) {
             e.preventDefault();
             const type = document.getElementById('newsType').value;
@@ -614,27 +1587,35 @@
             const badge = document.getElementById('newsBadge').value;
             const desc = document.getElementById('newsDesc').value;
 
-            marketingNews.unshift({ id: Date.now(), type, title, badge, date: "A l'instant", desc });
+            marketingNews.unshift({ id: Date.now(), type, title, badge, date: "À l'instant", desc });
             e.target.reset();
             renderNews();
+            alert("Nouvelle actualité marketing publiée avec succès sur la vitrine !");
         }
 
+        // Supprimer une actualité marketing
         function deleteNews(id) {
             marketingNews = marketingNews.filter(n => n.id !== id);
             renderNews();
         }
 
+        // Gestionnaire d'envoi du formulaire de devis
         function handleContactSubmit(e) {
             e.preventDefault();
-            document.getElementById('contactSuccess').classList.remove('hidden');
+            const success = document.getElementById('contactSuccess');
+            success.classList.remove('hidden');
             e.target.reset();
-            setTimeout(() => document.getElementById('contactSuccess').classList.add('hidden'), 5000);
+            setTimeout(() => {
+                success.classList.add('hidden');
+            }, 6000);
         }
 
+        // Initialisation au chargement de la page
         window.onload = function() {
             renderNews();
             updatePieceTypesDropdown();
             applyCatalogFilters();
+            updateHeroCarDisplay();
         };
     </script>
 </body>
