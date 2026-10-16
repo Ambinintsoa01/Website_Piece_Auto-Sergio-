@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEUTSCHPARTS IMPORT - Spécialiste Pièces Auto Allemandes OEM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
+        
+        .german-gradient-bar {
+            background: linear-gradient(90deg, #000000 0%, #000000 33%, #DD0000 33%, #DD0000 66%, #FFCE00 66%, #FFCE00 100%);
+            height: 6px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <!-- BARRE DE PRÉSENTATION MAQUETTE (Masquée pour les visiteurs finaux, accessible via URL secrète ou combinaison) -->
+    <div id="maquetteBar" class="hidden bg-white/95 border-b border-slate-200 px-4 py-2.5 sticky top-0 z-50 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white font-bold px-2.5 py-0.5 rounded text-xs uppercase tracking-wider">Maquette Client</span>
+                <span class="text-slate-600 hidden lg:inline font-medium">Naviguez entre l'accueil vitrine, le catalogue détaillé et l'espace admin.</span>
+            </div>
+            <div class="flex flex-wrap items-center bg-slate-100 p-1 rounded-lg border border-slate-200 gap-1">
+                <button id="btnViewSite" onclick="switchMainView('site')" class="px-3 py-1.5 rounded-md font-semibold transition-all bg-red-600 text-white shadow-sm">
+                    <i class="fa-solid fa-globe mr-1.5"></i>1. Accueil Vitrine
+                </button>
+                <button id="btnViewCatalog" onclick="openCatalogPage('all')" class="px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900">
+                    <i class="fa-solid fa-boxes-stacked mr-1.5"></i>2. Catalogue Pièces & Filtres
+                </button>
+                <button id="btnViewAdmin" onclick="switchMainView('admin')" class="px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900">
+                    <i class="fa-solid fa-chart-pie mr-1.5"></i>3. Espace Admin (Stats & AWS)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VUE 1 : SITE VITRINE PUBLIC                                           -->
+    <!-- ===================================================================== -->
+    <div id="publicSiteView">
+        <div class="german-gradient-bar"></div>
+
+        <!-- NAVIGATION -->
+        <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                <a href="#" onclick="switchMainView('site')" class="flex items-center space-x-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center shadow-md text-white">
+                        <i class="fa-solid fa-gears text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-slate-900">DEUTSCH<span class="text-red-600">PARTS</span></span>
+                        <span class="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold -mt-1">Importateur Officiel OEM</span>
+                    </div>
+                </a>
+
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                    <a href="#societe" class="hover:text-red-600 transition-colors">La Société & Parcours</a>
+                    <a href="#actualites" class="hover:text-red-600 transition-colors flex items-center">
+                        <span>Promos & Déstockage</span>
+                        <span class="ml-2 px-2 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 rounded-full animate-pulse">LIVE</span>
+                    </a>
+                    <a href="#avis" class="hover:text-red-600 transition-colors">Avis Clients</a>
+                </nav>
+
+                <div class="hidden sm:flex items-center space-x-3">
+                    <a href="#contact" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-sm shadow-md transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-phone-volume"></i>
+                        <span>Demander une pièce</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section class="relative bg-white py-20 lg:py-28 overflow-hidden border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-600 text-xs font-bold uppercase tracking-wider">
+                            <i class="fa-solid fa-certificate"></i>
+                            <span>Pièces d'origine Allemagne • Première Monte (OEM)</span>
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                            L'excellence allemande <span class="text-red-600">directement</span> pour vos véhicules.
+                        </h1>
+                        <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
+                            Spécialiste de l'importation de pièces automobiles d'origine (Volkswagen, Audi, BMW, Mercedes-Benz, Porsche). Un approvisionnement direct usine pour les professionnels et passionnés exigeants, sans intermédiaires superflus.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-4">
+                            <button onclick="openCatalogPage('all')" class="px-8 py-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow-lg shadow-red-600/20 transition-all flex items-center space-x-2">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                                <span>Explorer le Catalogue Pièces</span>
+                            </button>
+                            <a href="#contact" class="px-8 py-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm border border-slate-300 transition-all flex items-center space-x-2 shadow-sm">
+                                <i class="fa-solid fa-paper-plane text-red-600"></i>
+                                <span>Demander un devis rapide</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5">
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900">
+                            <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=DeutschParts+Import'" alt="Voiture Allemande Premium" class="w-full h-80 object-cover opacity-90">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-6">
+                                <div class="text-white">
+                                    <div class="text-xs uppercase font-bold text-amber-400 tracking-wider">Partenaire Officiel</div>
+                                    <div class="text-lg font-extrabold">Bosch • ZF • Lemförder • ATE • Meyle</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION SOCIÉTÉ & PARCOURS -->
+        <section id="societe" class="py-20 bg-slate-50 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-12 gap-12 items-start">
+                    <div class="lg:col-span-6 space-y-6">
+                        <div class="inline-block px-3 py-1 rounded-md bg-red-50 border border-red-200 text-red-600 text-xs font-bold uppercase tracking-wider">
+                            À Propos de notre société
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                            Le pont direct entre les usines allemandes et votre atelier.
+                        </h2>
+                        <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                            Fondée par des passionnés de mécanique européenne, <strong class="text-slate-900">DEUTSCHPARTS IMPORT</strong> garantit à ses clients des pièces rigoureusement identiques à celles sorties d'usine, tout en réduisant les coûts liés aux multiples intermédiaires.
+                        </p>
+                        <div class="grid sm:grid-cols-3 gap-4 pt-4">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                <i class="fa-solid fa-certificate text-amber-500 text-xl mb-2"></i>
+                                <h4 class="font-bold text-sm text-slate-900">Qualité Première Monte</h4>
+                                <p class="text-xs text-slate-600 mt-1">Traçabilité directe depuis l'Allemagne.</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                <i class="fa-solid fa-plane-arrival text-red-600 text-xl mb-2"></i>
+                                <h4 class="font-bold text-sm text-slate-900">Logistique Rapide</h4>
+                                <p class="text-xs text-slate-600 mt-1">Arrivages réguliers sécurisés.</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                <i class="fa-solid fa-headset text-emerald-600 text-xl mb-2"></i>
+                                <h4 class="font-bold text-sm text-slate-900">Conseil Technique</h4>
+                                <p class="text-xs text-slate-600 mt-1">Identification avec logiciels officiels.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+                        <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center">
+                            <i class="fa-solid fa-route text-red-600 mr-3"></i>
+                            Notre Parcours & Évolution
+                        </h3>
+                        <div class="relative border-l-2 border-slate-300 ml-4 space-y-8">
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-400 border-2 border-white"></span>
+                                <span class="text-xs font-bold text-amber-600 uppercase">2014 • Les Débuts</span>
+                                <h4 class="text-base font-bold text-slate-900 mt-0.5">Création & Premiers Réseaux à Francfort</h4>
+                                <p class="text-xs text-slate-600 mt-1">Lancement de l'importation sur commande pour véhicules allemands.</p>
+                            </div>
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
+                                <span class="text-xs font-bold text-amber-600 uppercase">2018 • Accords Équipementiers</span>
+                                <h4 class="text-base font-bold text-slate-900 mt-0.5">Partenariats Directs OEM</h4>
+                                <p class="text-xs text-slate-600 mt-1">Contrats d'approvisionnement avec Bosch, Sachs et Meyle.</p>
+                            </div>
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-red-600 border-2 border-white"></span>
+                                <span class="text-xs font-bold text-red-600 uppercase">2022 • Expansion</span>
+                                <h4 class="text-base font-bold text-slate-900 mt-0.5">Ouverture du Dépôt Principal</h4>
+                                <p class="text-xs text-slate-600 mt-1">Stock élargi pour disponibilité immédiate sur les pièces d'usure.</p>
+                            </div>
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white"></span>
+                                <span class="text-xs font-bold text-emerald-600 uppercase">Aujourd'hui • Référence</span>
+                                <h4 class="text-base font-bold text-slate-900 mt-0.5">Réseau de +450 Garages</h4>
+                                <p class="text-xs text-slate-600 mt-1">Vitrine digitale moderne connectée via AWS.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION PRODUITS (MASQUÉE DE LA PAGE D'ACCUEIL) -->
+        <section id="produits" class="hidden py-20 bg-white border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section masquée à la demande du client -->
+            </div>
+        </section>
+
+        <!-- SECTION ACTUALITÉS MARKETING -->
+        <section id="actualites" class="py-20 bg-slate-50 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-red-50 border border-red-200 text-red-600 text-xs font-bold uppercase tracking-wider mb-3">
+                            <i class="fa-solid fa-bullhorn"></i>
+                            <span>Offres Marketing</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Arrivages & Déstockage</h2>
+                    </div>
+                </div>
+                <div id="publicNewsContainer" class="grid md:grid-cols-3 gap-6"></div>
+            </div>
+        </section>
+
+        <!-- SECTION AVIS -->
+        <section id="avis" class="py-20 bg-white border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <h2 class="text-3xl font-extrabold text-slate-900">Avis de nos clients et garages partenaires</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+                        <p class="text-slate-700 text-sm italic">"Zéro retour sous garantie sur les bras de suspension Lemförder. Qualité irréprochable."</p>
+                        <div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-900">Marc R. - Garage EuroTech Auto</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+                        <p class="text-slate-700 text-sm italic">"Kit de vidange BVA ZF reçu rapidement pour mon BMW X5. Prix très compétitif."</p>
+                        <div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-900">Tiana A. - Propriétaire BMW X5</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
+                        <p class="text-slate-700 text-sm italic">"Les opérations de déstockage sur la filtration Mann-Filter nous permettent d'économiser 25%."</p>
+                        <div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-900">Sophie L. - Flotte Logistique</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="py-20 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-12 gap-12">
+                    <div class="lg:col-span-5 space-y-6">
+                        <h2 class="text-3xl font-extrabold text-slate-900">Besoin d'une pièce précise ?</h2>
+                        <p class="text-slate-600 text-sm leading-relaxed">Envoyez-nous la référence ou le numéro de châssis (VIN), réponse sous 2 heures.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-xs">
+                                <div class="text-slate-500">Email Pro AWS</div>
+                                <div class="font-bold text-slate-900 mt-1">contact@deutschparts-import.com</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-xs">
+                                <div class="text-slate-500">Téléphone / WhatsApp</div>
+                                <div class="font-bold text-slate-900 mt-1">+33 1 00 00 00 00 / +261 34 00 000 00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-lg">
+                            <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                                <div class="grid sm:grid-cols-2 gap-4">
+                                    <input type="text" required placeholder="Votre Nom / Garage *" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                                    <input type="text" required placeholder="Téléphone ou Email *" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                                </div>
+                                <textarea rows="3" required placeholder="Décrivez les pièces souhaitées..." class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs"></textarea>
+                                <button type="submit" class="w-full py-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md">Envoyer la demande</button>
+                            </form>
+                            <div id="contactSuccess" class="hidden mt-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs">
+                                Demande transmise avec succès sur contact@deutschparts-import.com !
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-white border-t border-slate-200 py-10">
+            <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
+                <div>DEUTSCHPARTS IMPORT • Hébergé & Sécurisé sur AWS</div>
+                <div>
+                    <button onclick="toggleAdminBar()" class="text-slate-400 hover:text-slate-600 text-[10px] underline">
+                        Accès Espace Administrateur (Interne)
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VUE 2 : CATALOGUE DÉDIÉ AVEC FILTRES                                  -->
+    <!-- ===================================================================== -->
+    <div id="catalogPageView" class="hidden min-h-screen bg-slate-50">
+        <div class="german-gradient-bar"></div>
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+                <button onclick="switchMainView('site')" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center space-x-2 border border-slate-200">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Retour à l'accueil</span>
+                </button>
+                <h1 class="text-base sm:text-xl font-extrabold text-slate-900">Catalogue Détaillé • Pièces Allemandes OEM</h1>
+            </div>
+        </header>
+
+        <div class="max-w-7xl mx-auto px-4 py-10">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                <!-- Filtres -->
+                <aside class="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 space-y-5 shadow-sm">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <h3 class="font-bold text-sm text-slate-900"><i class="fa-solid fa-filter text-red-600 mr-2"></i>Filtres</h3>
+                        <button onclick="resetCatalogFilters()" class="text-xs text-red-600 font-semibold">Réinitialiser</button>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Recherche</label>
+                        <input type="text" id="filterSearch" oninput="applyCatalogFilters()" placeholder="Ex: Disque, ATE, Golf..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Gamme</label>
+                        <select id="filterGamme" onchange="updatePieceTypesDropdown(); applyCatalogFilters();" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-semibold">
+                            <option value="all">Toutes les gammes</option>
+                            <option value="freinage">Sécurité & Freinage</option>
+                            <option value="moteur">Moteur & Filtration</option>
+                            <option value="suspension">Train Roulant & Suspension</option>
+                            <option value="transmission">Transmission & Boîte</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Marque (Équipementier)</label>
+                        <select id="filterBrand" onchange="applyCatalogFilters()" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-semibold">
+                            <option value="all">Toutes les marques</option>
+                            <option value="ATE">ATE</option>
+                            <option value="Bosch">Bosch</option>
+                            <option value="ZF">ZF</option>
+                            <option value="Lemförder">Lemförder</option>
+                            <option value="Meyle HD">Meyle HD</option>
+                            <option value="INA">INA</option>
+                            <option value="Mann-Filter">Mann-Filter</option>
+                            <option value="Bilstein">Bilstein</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Type de pièce</label>
+                        <select id="filterType" onchange="applyCatalogFilters()" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-semibold">
+                            <option value="all">Tous les types</option>
+                        </select>
+                    </div>
+                </aside>
+
+                <!-- Grille pièces -->
+                <div class="lg:col-span-8 space-y-4">
+                    <div class="bg-white border border-slate-200 px-5 py-3 rounded-xl text-xs text-slate-600 shadow-sm">
+                        Résultats : <strong id="catalogResultCount" class="text-slate-900 font-bold">0</strong> pièce(s)
+                    </div>
+                    <div id="catalogPartsGrid" class="grid sm:grid-cols-2 gap-4"></div>
+                    <div id="catalogEmptyState" class="hidden bg-white border border-slate-200 rounded-2xl p-10 text-center text-xs text-slate-500">
+                        Aucune pièce ne correspond à vos filtres.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VUE 3 : ESPACE ADMIN (STATS & AWS)                                    -->
+    <!-- ===================================================================== -->
+    <div id="adminDashboardView" class="hidden min-h-screen bg-slate-100 py-10">
+        <div class="max-w-7xl mx-auto px-4 space-y-8">
+            <div class="flex justify-between items-center bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-slate-900">Espace Admin : Stats & AWS</h1>
+                    <p class="text-xs text-slate-500">Suivi des visites, gestion des actus marketing et architecture AWS.</p>
+                </div>
+                <button onclick="switchMainView('site')" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold">Retour Site</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid sm:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="text-xs text-slate-500">Visiteurs Uniques (Mois)</div>
+                    <div class="text-3xl font-extrabold text-slate-900 mt-2">4 890</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="text-xs text-slate-500">Clics sur Promos</div>
+                    <div class="text-3xl font-extrabold text-amber-600 mt-2">1 145</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="text-xs text-slate-500">Contacts Générés</div>
+                    <div class="text-3xl font-extrabold text-emerald-600 mt-2">218</div>
+                </div>
+            </div>
+
+            <!-- Ajout Actu -->
+            <div class="grid lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                    <h3 class="font-bold text-sm text-slate-900 mb-4">Publier une actualité / déstockage</h3>
+                    <form onsubmit="addMarketingNews(event)" class="space-y-3">
+                        <select id="newsType" class="w-full px-3 py-2 rounded-xl bg-slate-50 border text-xs">
+                            <option value="DESTOCKAGE">🔥 DÉSTOCKAGE</option>
+                            <option value="PROMOTION">🏷️ PROMOTION</option>
+                            <option value="ARRIVAGE">✈️ ARRIVAGE</option>
+                        </select>
+                        <input type="text" id="newsTitle" required placeholder="Titre de l'offre" class="w-full px-3 py-2 rounded-xl bg-slate-50 border text-xs">
+                        <input type="text" id="newsBadge" required placeholder="Badge (ex: -30%)" class="w-full px-3 py-2 rounded-xl bg-slate-50 border text-xs">
+                        <textarea id="newsDesc" rows="2" required placeholder="Description..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border text-xs"></textarea>
+                        <button type="submit" class="w-full py-2.5 bg-red-600 text-white rounded-xl text-xs font-bold">Publier</button>
+                    </form>
+                </div>
+                <div class="lg:col-span-7 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                    <h3 class="font-bold text-sm text-slate-900 mb-4">Annonces actives</h3>
+                    <div id="adminNewsList" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- AWS Info -->
+            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3">
+                <h3 class="font-bold text-sm text-slate-900"><i class="fa-brands fa-aws text-amber-500 mr-2"></i>Infrastructure AWS</h3>
+                <p class="text-xs text-slate-600">Domaine configuré sur <strong class="text-slate-900">Route 53</strong>, emails pro hébergés via <strong class="text-slate-900">Amazon WorkMail / SES</strong> (contact@deutschparts-import.com) et hébergement statique rapide sur <strong class="text-slate-900">AWS CloudFront</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const catalogPartsData = [
+            { id: 1, name: "Disques de Frein Avant Ventilés", gamme: "freinage", brand: "ATE", type: "Disques de frein", compat: "VW Golf 7, Audi A3", oemRef: "OEM 5Q0 615 301", badge: "En stock", img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, name: "Plaquettes Céramiques Zéro Poussière", gamme: "freinage", brand: "ATE", type: "Plaquettes de frein", compat: "BMW Série 3, Série 5", oemRef: "OEM 34 11 6 850", badge: "Ceramic", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, name: "Kit Chaîne de Distribution Renforcé", gamme: "moteur", brand: "INA", type: "Kit distribution", compat: "BMW N47 / B47", oemRef: "OEM 11 31 8 510", badge: "Best-seller", img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, name: "Pack Filtration Complet", gamme: "moteur", brand: "Mann-Filter", type: "Filtres", compat: "VW / Audi 2.0 TDI", oemRef: "OEM HU 7020", badge: "OEM", img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, name: "Kit Bras de Suspension Renforcé", gamme: "suspension", brand: "Meyle HD", type: "Bras de suspension", compat: "BMW X5 / Série 5", oemRef: "OEM 31 12 6 775", badge: "Meyle HD", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, name: "Amortisseurs Avant Bilstein B4", gamme: "suspension", brand: "Bilstein", type: "Amortisseurs", compat: "Mercedes Classe C", oemRef: "OEM 22-241664", badge: "Gaz", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        let marketingNews = [
+            { id: 1, type: "DESTOCKAGE", title: "Arrivage direct amortisseurs Bilstein B4", badge: "-25%", date: "Il y a 2 jours", desc: "Lot spécial en provenance directe de l'usine d'Ennepetal en Allemagne." },
+            { id: 2, type: "PROMOTION", title: "Kits de distribution INA pour blocs TDI", badge: "Offre pro", date: "Il y a 5 jours", desc: "Tarifs préférentiels sur les références phares pour nos garages partenaires." }
+        ];
+
+        function switchMainView(viewName) {
+            document.getElementById('publicSiteView').classList.add('hidden');
+            document.getElementById('catalogPageView').classList.add('hidden');
+            document.getElementById('adminDashboardView').classList.add('hidden');
+
+            const btnSite = document.getElementById('btnViewSite');
+            const btnCat = document.getElementById('btnViewCatalog');
+            const btnAdm = document.getElementById('btnViewAdmin');
+
+            if (btnSite) btnSite.className = "px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900";
+            if (btnCat) btnCat.className = "px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900";
+            if (btnAdm) btnAdm.className = "px-3 py-1.5 rounded-md font-semibold transition-all text-slate-600 hover:text-slate-900";
+
+            if (viewName === 'site') {
+                document.getElementById('publicSiteView').classList.remove('hidden');
+                if (btnSite) btnSite.className = "px-3 py-1.5 rounded-md font-semibold transition-all bg-red-600 text-white shadow-sm";
+            } else if (viewName === 'catalog') {
+                document.getElementById('catalogPageView').classList.remove('hidden');
+                if (btnCat) btnCat.className = "px-3 py-1.5 rounded-md font-semibold transition-all bg-red-600 text-white shadow-sm";
+            } else if (viewName === 'admin') {
+                document.getElementById('adminDashboardView').classList.remove('hidden');
+                if (btnAdm) btnAdm.className = "px-3 py-1.5 rounded-md font-semibold transition-all bg-red-600 text-white shadow-sm";
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleAdminBar() {
+            const bar = document.getElementById('maquetteBar');
+            if (bar.classList.contains('hidden')) {
+                bar.classList.remove('hidden');
+                alert("Mode maquette/administration activé pour la démonstration.");
+            } else {
+                bar.classList.add('hidden');
+            }
+        }
+
+        function filterHomePageProducts(category, btnElement) {
+            // Mise à jour visuelle des boutons de filtre de la page d'accueil
+            document.querySelectorAll('#productFilters .filter-btn').forEach(btn => {
+                btn.className = "filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-all";
+            });
+            btnElement.className = "filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow-sm transition-all";
+
+            // Filtrage des cartes sur la page d'accueil
+            const cards = document.querySelectorAll('#productGrid .product-card');
+            cards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                if (category === 'all' || cardCategory === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openCatalogPage(gamme = 'all') {
+            switchMainView('catalog');
+            document.getElementById('filterGamme').value = gamme;
+            updatePieceTypesDropdown();
+            applyCatalogFilters();
+        }
+
+        function updatePieceTypesDropdown() {
+            const gamme = document.getElementById('filterGamme').value;
+            const typeSelect = document.getElementById('filterType');
+            const relevant = gamme === 'all' ? catalogPartsData : catalogPartsData.filter(p => p.gamme === gamme);
+            const types = [...new Set(relevant.map(p => p.type))];
+            
+            typeSelect.innerHTML = '<option value="all">Tous les types</option>';
+            types.forEach(t => {
+                typeSelect.innerHTML += `<option value="${t}">${t}</option>`;
+            });
+        }
+
+        function applyCatalogFilters() {
+            const search = document.getElementById('filterSearch').value.toLowerCase();
+            const gamme = document.getElementById('filterGamme').value;
+            const brand = document.getElementById('filterBrand').value;
+            const type = document.getElementById('filterType').value;
+
+            const filtered = catalogPartsData.filter(p => {
+                return (gamme === 'all' || p.gamme === gamme) &&
+                       (brand === 'all' || p.brand === brand) &&
+                       (type === 'all' || p.type === type) &&
+                       (!search || p.name.toLowerCase().includes(search) || p.brand.toLowerCase().includes(search));
+            });
+
+            const grid = document.getElementById('catalogPartsGrid');
+            const empty = document.getElementById('catalogEmptyState');
+            document.getElementById('catalogResultCount').textContent = filtered.length;
+
+            grid.innerHTML = '';
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+            grid.classList.remove('hidden');
+            empty.classList.add('hidden');
+
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between p-4">
+                        <div>
+                            <img src="${p.img}" class="w-full h-36 object-cover rounded-xl mb-3">
+                            <span class="text-[10px] font-bold bg-slate-100 px-2 py-0.5 rounded text-slate-700">${p.brand}</span>
+                            <h4 class="font-extrabold text-sm text-slate-900 mt-1">${p.name}</h4>
+                            <p class="text-xs text-slate-500 mt-1">${p.compat} • ${p.oemRef}</p>
+                        </div>
+                        <button onclick="requestQuote('${p.name}')" class="mt-4 w-full py-2 bg-slate-900 hover:bg-red-600 text-white rounded-xl text-xs font-bold transition-colors">
+                            Demander un devis
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function resetCatalogFilters() {
+            document.getElementById('filterSearch').value = '';
+            document.getElementById('filterGamme').value = 'all';
+            document.getElementById('filterBrand').value = 'all';
+            updatePieceTypesDropdown();
+            applyCatalogFilters();
+        }
+
+        function requestQuote(pieceName) {
+            switchMainView('site');
+            document.querySelector('#contact textarea').value = `Bonjour, je souhaite un devis pour la pièce : ${pieceName}`;
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function filterProducts(cat) {
+            openCatalogPage(cat);
+        }
+
+        function renderNews() {
+            const container = document.getElementById('publicNewsContainer');
+            const adminList = document.getElementById('adminNewsList');
+            if (container) container.innerHTML = '';
+            if (adminList) adminList.innerHTML = '';
+
+            marketingNews.forEach(n => {
+                if (container) {
+                    container.innerHTML += `
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="px-2 py-0.5 text-[10px] font-bold bg-red-50 text-red-600 rounded">${n.type}</span>
+                                <span class="text-xs font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">${n.badge}</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900">${n.title}</h3>
+                            <p class="text-xs text-slate-600 mt-2">${n.desc}</p>
+                        </div>
+                    `;
+                }
+                if (adminList) {
+                    adminList.innerHTML += `
+                        <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border text-xs">
+                            <div><strong>${n.title}</strong> (${n.badge})</div>
+                            <button onclick="deleteNews(${n.id})" class="text-red-600 font-bold">Supprimer</button>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function addMarketingNews(e) {
+            e.preventDefault();
+            const type = document.getElementById('newsType').value;
+            const title = document.getElementById('newsTitle').value;
+            const badge = document.getElementById('newsBadge').value;
+            const desc = document.getElementById('newsDesc').value;
+
+            marketingNews.unshift({ id: Date.now(), type, title, badge, date: "A l'instant", desc });
+            e.target.reset();
+            renderNews();
+        }
+
+        function deleteNews(id) {
+            marketingNews = marketingNews.filter(n => n.id !== id);
+            renderNews();
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            document.getElementById('contactSuccess').classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => document.getElementById('contactSuccess').classList.add('hidden'), 5000);
+        }
+
+        window.onload = function() {
+            renderNews();
+            updatePieceTypesDropdown();
+            applyCatalogFilters();
+        };
+    </script>
+</body>
+</html>
